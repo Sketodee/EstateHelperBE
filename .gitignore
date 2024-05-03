@@ -1,0 +1,15 @@
+Migration/
+**/Migration/
+
+.vs/
+**/.vs/
+
+bin/
+**/bin/
+
+obj/
+**/obj/
+
+logs/
+**/logs/
+
