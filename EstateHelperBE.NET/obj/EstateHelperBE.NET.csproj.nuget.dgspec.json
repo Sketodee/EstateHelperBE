@@ -4,14 +4,14 @@
     "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelperBE.NET\\EstateHelperBE.NET.csproj": {}
   },
   "projects": {
-    "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain\\EstateHelper.Domain.csproj": {
+    "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application.Contract\\EstateHelper.Application.Contract.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain\\EstateHelper.Domain.csproj",
-        "projectName": "EstateHelper.Domain",
-        "projectPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain\\EstateHelper.Domain.csproj",
+        "projectUniqueName": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application.Contract\\EstateHelper.Application.Contract.csproj",
+        "projectName": "EstateHelper.Application.Contract",
+        "projectPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application.Contract\\EstateHelper.Application.Contract.csproj",
         "packagesPath": "C:\\Users\\shoba\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain\\obj\\",
+        "outputPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application.Contract\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\shoba\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -40,6 +40,280 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.0, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.18, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.18, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[7.0.18, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.18, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application\\EstateHelper.Application.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application\\EstateHelper.Application.csproj",
+        "projectName": "EstateHelper.Application",
+        "projectPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application\\EstateHelper.Application.csproj",
+        "packagesPath": "C:\\Users\\shoba\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\shoba\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application.Contract\\EstateHelper.Application.Contract.csproj": {
+                "projectPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application.Contract\\EstateHelper.Application.Contract.csproj"
+              },
+              "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain\\EstateHelper.Domain.csproj": {
+                "projectPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain\\EstateHelper.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.0, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.18, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.18, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[7.0.18, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.18, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain.Shared\\EstateHelper.Domain.Shared.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain.Shared\\EstateHelper.Domain.Shared.csproj",
+        "projectName": "EstateHelper.Domain.Shared",
+        "projectPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain.Shared\\EstateHelper.Domain.Shared.csproj",
+        "packagesPath": "C:\\Users\\shoba\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain.Shared\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\shoba\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain\\EstateHelper.Domain.csproj": {
+                "projectPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain\\EstateHelper.Domain.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.0, )"
+            },
+            "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[7.0.18, )"
+            },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.18, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[7.0.18, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[7.0.18, )"
+            },
+            "Serilog.AspNetCore": {
+              "target": "Package",
+              "version": "[7.0.0, )"
+            }
+          },
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain\\EstateHelper.Domain.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain\\EstateHelper.Domain.csproj",
+        "projectName": "EstateHelper.Domain",
+        "projectPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain\\EstateHelper.Domain.csproj",
+        "packagesPath": "C:\\Users\\shoba\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\shoba\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net7.0"
+        ],
+        "sources": {
+          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net7.0": {
+            "targetAlias": "net7.0",
+            "projectReferences": {
+              "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application.Contract\\EstateHelper.Application.Contract.csproj": {
+                "projectPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application.Contract\\EstateHelper.Application.Contract.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net7.0": {
+          "targetAlias": "net7.0",
+          "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.0, )"
+            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[7.0.18, )"
@@ -125,6 +399,10 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.0, )"
+            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[7.0.18, )"
@@ -194,6 +472,12 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
+              "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application\\EstateHelper.Application.csproj": {
+                "projectPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application\\EstateHelper.Application.csproj"
+              },
+              "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain.Shared\\EstateHelper.Domain.Shared.csproj": {
+                "projectPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain.Shared\\EstateHelper.Domain.Shared.csproj"
+              },
               "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain\\EstateHelper.Domain.csproj": {
                 "projectPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain\\EstateHelper.Domain.csproj"
               },
@@ -213,6 +497,10 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "dependencies": {
+            "AutoMapper.Extensions.Microsoft.DependencyInjection": {
+              "target": "Package",
+              "version": "[12.0.0, )"
+            },
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
               "version": "[7.0.18, )"

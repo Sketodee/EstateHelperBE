@@ -1,5 +1,9 @@
+using EstateHelper.Application.Auth;
+using EstateHelper.Application.Contract.Interface;
 using EstateHelper.Domain.Models;
+using EstateHelper.Domain.User;
 using EstateHelper.EntityFramework;
+using EstateHelper.EntityFramework.Repository;
 using EstateHelperBE.NET;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
@@ -13,7 +17,6 @@ var builder = WebApplication.CreateBuilder(args);
 ConfigurationManager configuration = builder.Configuration;
 
 // Add services to the container.
-//applicaiton based services
 
 //Initialize serilog 
 var logger = new LoggerConfiguration()
@@ -31,6 +34,14 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
     builder.Configuration.GetConnectionString("DefaultConnection"),
     provideroptions => provideroptions.EnableRetryOnFailure()
     ), ServiceLifetime.Transient);
+
+
+//add business logic services
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUserManager, UserManager>();
 
 
 
@@ -86,6 +97,7 @@ builder.Services.AddIdentity<AppUser, IdentityRole>(options =>
 
 
 builder.Services.AddControllers();
+
 
 
 

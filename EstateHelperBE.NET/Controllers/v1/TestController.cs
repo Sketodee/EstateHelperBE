@@ -11,7 +11,8 @@ namespace EstateHelperBE.Controllers.v1
         [HttpGet]
         public async Task<IActionResult> Test()
         {
-            return Ok("Fromversion 1"); 
+            return Ok("Fromversion 1");
+            //return StatusCode(404, "Working"); 
         }
     }
 }
