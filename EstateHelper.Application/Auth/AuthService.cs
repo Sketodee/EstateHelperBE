@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EstateHelper.Application.Contract.Dtos.Login;
 using EstateHelper.Application.Contract.Dtos.User;
 using EstateHelper.Application.Contract.Interface;
 using EstateHelper.Domain.User;
@@ -19,6 +20,12 @@ namespace EstateHelper.Application.Auth
         {
             _userManager = userManager;
             _mapper = mapper;
+        }
+
+        public async Task<LoginResponseDto> Login(LoginRequestDto request)
+        {
+           var result = await _userManager.Login(request);
+            return result;
         }
 
         public async Task<CreateUserDto> SignUpAdmin(CreateUserDto request)

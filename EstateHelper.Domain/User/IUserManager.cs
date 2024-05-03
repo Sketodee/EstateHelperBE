@@ -1,4 +1,5 @@
-﻿using EstateHelper.Application.Contract.Dtos.User;
+﻿using EstateHelper.Application.Contract.Dtos.Login;
+using EstateHelper.Application.Contract.Dtos.User;
 using EstateHelper.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -12,5 +13,6 @@ namespace EstateHelper.Domain.User
     {
         Task<AppUser> SignUpUser(CreateUserDto request);
         Task<AppUser> SignUpAdmin(CreateUserDto request);
+        Task<LoginResponseDto> Login(LoginRequestDto request);
     }
 }

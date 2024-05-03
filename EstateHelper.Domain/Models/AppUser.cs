@@ -23,5 +23,9 @@ namespace EstateHelper.Domain.Models
         public bool isActive { get; set; } = true;
         public DateTime CreatedOn { get; set; } = DateTime.Now;
         public int LoginCount { get; set; } = 0;
+        public string RefreshToken { get; set; } = string.Empty; 
+        public DateTime TokenCreated { get; set; } 
+        public DateTime TokenExpires { get; set; }
+
     }
 }

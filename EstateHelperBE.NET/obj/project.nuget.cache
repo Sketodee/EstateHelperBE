@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "ReQU+d4FYqcDa44nWewg2/yoNPulvC0pvKj7Qvw0hy+82P+BoULPW2CW9sMmyoLHF6KKnFkce0Xpv1SFxxscIA==",
+  "dgSpecHash": "8RI2EP9nTE7dFoBWNvkfrreOqQVkI1lA2FgeqxfhFQ0av4swKDAxgSenD/mnmMYhJm1MJN26tJKEuQYXeWejgg==",
   "success": true,
   "projectFilePath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelperBE.NET\\EstateHelperBE.NET.csproj",
   "expectedPackageFiles": [
@@ -9,6 +9,7 @@
     "C:\\Users\\shoba\\.nuget\\packages\\azure.core\\1.35.0\\azure.core.1.35.0.nupkg.sha512",
     "C:\\Users\\shoba\\.nuget\\packages\\azure.identity\\1.10.3\\azure.identity.1.10.3.nupkg.sha512",
     "C:\\Users\\shoba\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\shoba\\.nuget\\packages\\microsoft.aspnetcore.authentication.jwtbearer\\7.0.18\\microsoft.aspnetcore.authentication.jwtbearer.7.0.18.nupkg.sha512",
     "C:\\Users\\shoba\\.nuget\\packages\\microsoft.aspnetcore.cryptography.internal\\7.0.18\\microsoft.aspnetcore.cryptography.internal.7.0.18.nupkg.sha512",
     "C:\\Users\\shoba\\.nuget\\packages\\microsoft.aspnetcore.cryptography.keyderivation\\7.0.18\\microsoft.aspnetcore.cryptography.keyderivation.7.0.18.nupkg.sha512",
     "C:\\Users\\shoba\\.nuget\\packages\\microsoft.aspnetcore.identity.entityframeworkcore\\7.0.18\\microsoft.aspnetcore.identity.entityframeworkcore.7.0.18.nupkg.sha512",
