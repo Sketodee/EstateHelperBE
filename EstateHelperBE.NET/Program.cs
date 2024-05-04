@@ -1,5 +1,6 @@
 using EstateHelper.Application.Auth;
 using EstateHelper.Application.Contract.Interface;
+using EstateHelper.Domain.HelperFunctions;
 using EstateHelper.Domain.Models;
 using EstateHelper.Domain.User;
 using EstateHelper.EntityFramework;
@@ -41,6 +42,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
 //add business logic services
 builder.Services.AddAutoMapper(typeof(Program).Assembly);
 builder.Services.AddHttpContextAccessor();
+builder.Services.AddScoped<Helpers>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserManager, UserManager>();

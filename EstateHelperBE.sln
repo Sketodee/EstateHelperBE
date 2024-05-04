@@ -3,17 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34018.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstateHelperBE.NET", "EstateHelperBE.NET\EstateHelperBE.NET.csproj", "{B132349E-DD28-41D5-8F30-94CAA58053A6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EstateHelperBE.NET", "EstateHelperBE.NET\EstateHelperBE.NET.csproj", "{B132349E-DD28-41D5-8F30-94CAA58053A6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstateHelper.Application", "EstateHelper.Application\EstateHelper.Application.csproj", "{02B4DF82-49AD-4A2A-B154-9D6A723E8F0B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EstateHelper.Application", "EstateHelper.Application\EstateHelper.Application.csproj", "{02B4DF82-49AD-4A2A-B154-9D6A723E8F0B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstateHelper.Application.Contract", "EstateHelper.Application.Contract\EstateHelper.Application.Contract.csproj", "{864FD719-CEA1-4F5B-AA2A-3F4A426A1FA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EstateHelper.Application.Contract", "EstateHelper.Application.Contract\EstateHelper.Application.Contract.csproj", "{864FD719-CEA1-4F5B-AA2A-3F4A426A1FA6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstateHelper.Domain", "EstateHelper.Domain\EstateHelper.Domain.csproj", "{3136FF83-DE48-415E-8596-F0A71D03E41B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EstateHelper.Domain", "EstateHelper.Domain\EstateHelper.Domain.csproj", "{3136FF83-DE48-415E-8596-F0A71D03E41B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstateHelper.Domain.Shared", "EstateHelper.Domain.Shared\EstateHelper.Domain.Shared.csproj", "{8BC7D516-8222-47A5-ACD0-E0ECD30C9DB0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EstateHelper.Domain.Shared", "EstateHelper.Domain.Shared\EstateHelper.Domain.Shared.csproj", "{8BC7D516-8222-47A5-ACD0-E0ECD30C9DB0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EstateHelper.EntityFramework", "EstateHelper.EntityFramework\EstateHelper.EntityFramework.csproj", "{B3971A9C-5763-4F7B-A25B-B163AD3CADEF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EstateHelper.EntityFramework", "EstateHelper.EntityFramework\EstateHelper.EntityFramework.csproj", "{B3971A9C-5763-4F7B-A25B-B163AD3CADEF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
