@@ -24,6 +24,7 @@
 
 	<ItemGroup>
 		 <ProjectReference Include="..\EstateHelper.Application.Contract\EstateHelper.Application.Contract.csproj" />
+		 <ProjectReference Include="..\EstateHelper.Domain.Shared\EstateHelper.Domain.Shared.csproj" />
 		 <ProjectReference Include="..\EstateHelper.Domain\EstateHelper.Domain.csproj" />
 		 <ProjectReference Include="..\EstateHelper.EntityFramework\EstateHelper.EntityFramework.csproj" />		
 	</ItemGroup>

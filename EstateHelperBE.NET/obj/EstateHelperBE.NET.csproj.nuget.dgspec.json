@@ -120,6 +120,9 @@
               "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application.Contract\\EstateHelper.Application.Contract.csproj": {
                 "projectPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application.Contract\\EstateHelper.Application.Contract.csproj"
               },
+              "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain.Shared\\EstateHelper.Domain.Shared.csproj": {
+                "projectPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain.Shared\\EstateHelper.Domain.Shared.csproj"
+              },
               "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain\\EstateHelper.Domain.csproj": {
                 "projectPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain\\EstateHelper.Domain.csproj"
               },
@@ -402,6 +405,9 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
+              "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain.Shared\\EstateHelper.Domain.Shared.csproj": {
+                "projectPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain.Shared\\EstateHelper.Domain.Shared.csproj"
+              },
               "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain\\EstateHelper.Domain.csproj": {
                 "projectPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Domain\\EstateHelper.Domain.csproj"
               }
@@ -495,6 +501,9 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
+              "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application.Contract\\EstateHelper.Application.Contract.csproj": {
+                "projectPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application.Contract\\EstateHelper.Application.Contract.csproj"
+              },
               "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application\\EstateHelper.Application.csproj": {
                 "projectPath": "C:\\Users\\shoba\\Desktop\\EstateHelperBE\\EstateHelper.Application\\EstateHelper.Application.csproj"
               },

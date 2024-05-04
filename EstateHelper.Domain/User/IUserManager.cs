@@ -14,5 +14,7 @@ namespace EstateHelper.Domain.User
         Task<AppUser> SignUpUser(CreateUserDto request);
         Task<AppUser> SignUpAdmin(CreateUserDto request);
         Task<LoginResponseDto> Login(LoginRequestDto request);
+        Task<CreateUserDto> GetLoggedInUser();  
+        Task<string> GetRefreshToken();
     }
 }

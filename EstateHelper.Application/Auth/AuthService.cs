@@ -22,6 +22,18 @@ namespace EstateHelper.Application.Auth
             _mapper = mapper;
         }
 
+        public async Task<CreateUserDto> GetLoggedInUser()
+        {
+            var result = await _userManager.GetLoggedInUser();
+            return result;
+        }
+
+        public async Task<string> GetRefreshToken()
+        {
+           var result = await _userManager.GetRefreshToken();
+            return result;
+        }
+
         public async Task<LoginResponseDto> Login(LoginRequestDto request)
         {
            var result = await _userManager.Login(request);

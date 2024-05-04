@@ -2,6 +2,7 @@
 using EstateHelper.Application.Contract.Dtos.User;
 using EstateHelper.Application.Contract.Interface;
 using EstateHelper.Domain.Shared;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -70,6 +71,48 @@ namespace EstateHelperBE.NET.Controllers.v1
                 response.Data = result;
                 response.Success = true;
                 response.Message = "Login successful";
+                return StatusCode(200, response);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+                return StatusCode(500, response);
+            }
+        }
+
+        [Authorize]
+        [HttpGet("getloggedinuser")]
+        public async Task<ActionResult<ServiceResponse<CreateUserDto>>> GetLoggedInUser()
+        {
+            ServiceResponse<CreateUserDto> response = new();
+            try
+            {
+                var result = await _authService.GetLoggedInUser();
+                response.Data = result;
+                response.Success = true;
+                response.Message = "User fetched";
+                return StatusCode(200, response);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+                return StatusCode(500, response);
+            }
+        }
+
+        [Authorize]
+        [HttpGet("getrefreshtoken")]
+        public async Task<ActionResult<string>> RefreshToken()
+        {
+            ServiceResponse<string> response = new();
+            try
+            {
+                var result = await _authService.GetRefreshToken();
+                response.Data = result;
+                response.Success = true;
+                response.Message = "Refresh token generated";
                 return StatusCode(200, response);
             }
             catch (Exception ex)
