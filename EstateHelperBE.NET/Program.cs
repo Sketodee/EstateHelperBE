@@ -1,5 +1,7 @@
 using EstateHelper.Application.Auth;
+using EstateHelper.Application.ConsultantGroups;
 using EstateHelper.Application.Contract.Interface;
+using EstateHelper.Domain.ConsultantGroups;
 using EstateHelper.Domain.HelperFunctions;
 using EstateHelper.Domain.Models;
 using EstateHelper.Domain.User;
@@ -46,6 +48,9 @@ builder.Services.AddScoped<Helpers>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserManager, UserManager>();
+builder.Services.AddScoped<IConsultantGroupAppService, ConsultantGroupAppService>();
+builder.Services.AddScoped<IConsultantGroupRepository, ConsultantGroupRepository>();    
+builder.Services.AddScoped<IConsultantGroupManager, ConsultantGroupManager>();
 
 
 

@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Azure;
 using EstateHelper.Application.Contract.Dtos.User;
+using EstateHelper.Domain.HelperFunctions;
 using EstateHelper.Domain.Models;
 using EstateHelper.Domain.User;
 using Microsoft.AspNetCore.Identity;
@@ -35,12 +36,24 @@ namespace EstateHelper.EntityFramework.Repository
             _configuration = configuration;
         }
 
-        public async Task<AppUser> SignUpAdmin(CreateUserDto request)
+        public async Task<AppUser> FindByIdAsync(string id)
+        {
+            var user = await _context.Users.Where(x => x.Id == id && x.isActive).FirstOrDefaultAsync() ?? throw new Exception($"No user with Id {id}");
+            return user; 
+        }
+
+        public async Task<List<AppUser>> GetAllAsync()
+        {
+            var allUsers = await _context.Users.ToListAsync();
+            return allUsers; 
+        }
+
+        public async Task<AppUser> SignUpGeneralAdmin(CreateUserDto request)
         {
             //initialize new referrer generation list 
-            List<int> refGen = new(); 
+            List<int> refGen = new();
             request.ReferrerId ??= 600;
-            refGen.Add(600); 
+            refGen.Add(600);
             var appUser = _mapper.Map<AppUser>(request);
             appUser.RefererGeneration = refGen;
 
@@ -48,12 +61,14 @@ namespace EstateHelper.EntityFramework.Repository
             if (!result.Succeeded) { throw new Exception($"Can't create user - {result.Errors.FirstOrDefault()?.Description}"); };
 
             //check if user role already exists
-            if (!await _roleManager.RoleExistsAsync("Admin"))
-                await _roleManager.CreateAsync(new IdentityRole("Admin"));
+            if (!await _roleManager.RoleExistsAsync(EstateHelperEnums.EstateHelperRoles.GeneralAdmin.ToString()))
+                await _roleManager.CreateAsync(new IdentityRole(EstateHelperEnums.EstateHelperRoles.GeneralAdmin.ToString()));
+                await _roleManager.CreateAsync(new IdentityRole(EstateHelperEnums.EstateHelperRoles.Admin.ToString()));
+                await _roleManager.CreateAsync(new IdentityRole(EstateHelperEnums.EstateHelperRoles.User.ToString()));
 
-            if (await _roleManager.RoleExistsAsync("Admin"))
+            if (await _roleManager.RoleExistsAsync(EstateHelperEnums.EstateHelperRoles.GeneralAdmin.ToString()))
             {
-                await _userManager.AddToRoleAsync(appUser, "Admin");
+                await _userManager.AddToRoleAsync(appUser, EstateHelperEnums.EstateHelperRoles.GeneralAdmin.ToString());
             }
 
             return appUser;
@@ -76,16 +91,23 @@ namespace EstateHelper.EntityFramework.Repository
             if(!result.Succeeded) { throw new Exception($"Can't create user - {result.Errors.FirstOrDefault()?.Description}"); };
 
             //check if user role already exists
-            if (!await _roleManager.RoleExistsAsync("User"))
-                await _roleManager.CreateAsync(new IdentityRole("User"));
+            if (!await _roleManager.RoleExistsAsync(EstateHelperEnums.EstateHelperRoles.User.ToString()))
+                //await _roleManager.CreateAsync(new IdentityRole("User"));
+                throw new Exception("Can't add user because role doesn't exist"); 
 
-            if (await _roleManager.RoleExistsAsync("User"))
+            if (await _roleManager.RoleExistsAsync(EstateHelperEnums.EstateHelperRoles.User.ToString()))
             {
-                await _userManager.AddToRoleAsync(appUser, "User");
+                await _userManager.AddToRoleAsync(appUser, EstateHelperEnums.EstateHelperRoles.User.ToString());
             }
 
             return appUser; 
 
         }
+
+        public Task<AppUser> UpdateAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

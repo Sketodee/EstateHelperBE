@@ -12,7 +12,7 @@ namespace EstateHelper.Domain.User
     public interface IUserManager
     {
         Task<AppUser> SignUpUser(CreateUserDto request);
-        Task<AppUser> SignUpAdmin(CreateUserDto request);
+        Task<AppUser> SignUpGeneralAdmin(CreateUserDto request);
         Task<LoginResponseDto> Login(LoginRequestDto request);
         Task<CreateUserDto> GetLoggedInUser();  
         Task<string> GetRefreshToken();

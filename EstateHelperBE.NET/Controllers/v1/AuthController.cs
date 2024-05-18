@@ -20,7 +20,7 @@ namespace EstateHelperBE.NET.Controllers.v1
             _authService = authService;
         }
 
-        [HttpPost("register")]
+        [HttpPost("Register")]
         public async Task<ActionResult<ServiceResponse<CreateUserDto>>> SignUpUser(CreateUserDto request)
         {
             ServiceResponse<CreateUserDto> response = new();
@@ -40,13 +40,13 @@ namespace EstateHelperBE.NET.Controllers.v1
             }
         }
 
-        [HttpPost("registeradmin")]
-        public async Task<ActionResult<ServiceResponse<CreateUserDto>>> SignUpAdmin(CreateUserDto request)
+        [HttpPost("RegisterAdmin")]
+        public async Task<ActionResult<ServiceResponse<CreateUserDto>>> SignUpGeneralAdmin(CreateUserDto request)
         {
             ServiceResponse<CreateUserDto> response = new();
             try
             {
-                var result = await _authService.SignUpAdmin(request);
+                var result = await _authService.SignUpGeneralAdmin(request);
                 response.Data = result;
                 response.Success = true;
                 response.Message = "User successfully created";
@@ -61,7 +61,7 @@ namespace EstateHelperBE.NET.Controllers.v1
         }
 
 
-        [HttpPost("login")]
+        [HttpPost("Login")]
         public async Task<ActionResult<ServiceResponse<LoginResponseDto>>> Login(LoginRequestDto request)
         {
             ServiceResponse<LoginResponseDto> response = new();
@@ -82,7 +82,7 @@ namespace EstateHelperBE.NET.Controllers.v1
         }
 
         [Authorize]
-        [HttpGet("getloggedinuser")]
+        [HttpGet("GetloggedInUser")]
         public async Task<ActionResult<ServiceResponse<CreateUserDto>>> GetLoggedInUser()
         {
             ServiceResponse<CreateUserDto> response = new();
@@ -102,8 +102,7 @@ namespace EstateHelperBE.NET.Controllers.v1
             }
         }
 
-        [Authorize]
-        [HttpGet("getrefreshtoken")]
+        [HttpGet("GetRefreshToken")]
         public async Task<ActionResult<string>> RefreshToken()
         {
             ServiceResponse<string> response = new();

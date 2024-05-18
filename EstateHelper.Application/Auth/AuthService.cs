@@ -40,9 +40,9 @@ namespace EstateHelper.Application.Auth
             return result;
         }
 
-        public async Task<CreateUserDto> SignUpAdmin(CreateUserDto request)
+        public async Task<CreateUserDto> SignUpGeneralAdmin(CreateUserDto request)
         {
-            var result = await _userManager.SignUpAdmin(request);
+            var result = await _userManager.SignUpGeneralAdmin(request);
             return _mapper.Map<CreateUserDto>(result);
         }
 

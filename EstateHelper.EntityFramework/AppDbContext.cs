@@ -12,6 +12,8 @@ namespace EstateHelper.EntityFramework
 {
     public class AppDbContext: IdentityDbContext<AppUser>
     {
+        public DbSet<ConsultantGroup> ConsultantGroups{ get; set; } = null!;
+
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
                 
@@ -29,10 +31,12 @@ namespace EstateHelper.EntityFramework
                           .Select(int.Parse)
                           .ToList());                         // Conversion from string to List<int>
 
+            modelBuilder.Entity<ConsultantGroup>()
+          .Property(u => u.MembersId) // Assuming MembersId is a List<string> property in ConsultantGroup
+          .HasConversion(
+              v => string.Join(",", v), // Conversion from List<string> to string
+              v => v.Split(',', StringSplitOptions.RemoveEmptyEntries).ToList()); // Conversion from string to List<string>
 
-            //   modelBuilder.Entity<AppUser>()
-            //.Property(e => e.Link)
-            //.ValueGeneratedOnAdd().HasDefaultValueSql("600");
 
             modelBuilder.HasSequence<int>("LinkSequence", schema: "dbo")
         .StartsAt(600)
@@ -42,9 +46,6 @@ namespace EstateHelper.EntityFramework
         .Property(e => e.Link)
         .HasDefaultValueSql("NEXT VALUE FOR dbo.LinkSequence");
 
-            //modelBuilder.Entity<AppUser>()
-            //    .Property(e => e.Link)
-            //    .UseHiLo("LinkSequence", schema: "dbo");
 
         }
     }

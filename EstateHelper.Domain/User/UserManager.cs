@@ -65,15 +65,16 @@ namespace EstateHelper.Domain.User
                 Email = appUser.Email,
                 Id = appUser.Id,
                 Token = returnedToken,
+                RefreshToken = refreshToken.Token
             };
 
             return userDetails; 
            
         }
 
-        public async Task<AppUser> SignUpAdmin(CreateUserDto request)
+        public async Task<AppUser> SignUpGeneralAdmin(CreateUserDto request)
         {
-            var result = await _userRepository.SignUpAdmin(request);
+            var result = await _userRepository.SignUpGeneralAdmin(request);
             return result;
         }
 
@@ -140,10 +141,12 @@ namespace EstateHelper.Domain.User
 
         public async Task<string> GetRefreshToken()
         {
-            var user = await _helpers.ReturnLoggedInUser();
+            //var user = await _helpers.ReturnLoggedInUser();
             var httpContext = _httpContextAccessor.HttpContext;
             var refreshToken = httpContext.Request.Cookies.TryGetValue("refreshToken", out string value) ? value : null;
-            _ = user.RefreshToken.Equals(refreshToken) ? true : throw new Exception("Invalid Refresh Token");
+            //check the user that owns the refresh token being sent 
+            var user = (await _userRepository.GetAllAsync()).FirstOrDefault(x => x.RefreshToken == refreshToken) ?? throw new Exception("Invalid Refresh Token"); 
+            //_ = user.RefreshToken.Equals(refreshToken) ? true : throw new Exception("Invalid Refresh Token");
             _ = user.TokenExpires < DateTime.Now ? throw new Exception("Token Expired") : false;
 
             var token = await GetToken(user);
