@@ -57,7 +57,8 @@ builder.Services.AddScoped<IConsultantGroupManager, ConsultantGroupManager>();
 //for CORS policy 
 builder.Services.AddCors(p => p.AddPolicy("corspolicy", build =>
 {
-    build.WithOrigins("*").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
+    var allowedOrigins = new[] { "http://localhost:3000"};
+    build.WithOrigins(allowedOrigins).AllowAnyMethod().AllowAnyHeader().AllowCredentials();
 }));
 
 //add versioning for API

@@ -61,11 +61,11 @@ namespace EstateHelper.Domain.User
 
             var userDetails = new LoginResponseDto
             {
-                Role = userRoles[0],
-                Email = appUser.Email,
-                Id = appUser.Id,
+                //Role = userRoles[0],
+                //Email = appUser.Email,
+                User = $"{appUser.Surname} {appUser.FirstName}",
                 Token = returnedToken,
-                RefreshToken = refreshToken.Token
+                //RefreshToken = refreshToken.Token
             };
 
             return userDetails; 
@@ -103,7 +103,7 @@ namespace EstateHelper.Domain.User
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT:ValidIssuer"],
                 audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddHours(1),
+                expires: DateTime.Now.AddMinutes(2),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                 );
@@ -127,6 +127,8 @@ namespace EstateHelper.Domain.User
             var cookieOptions = new CookieOptions
             {
                 HttpOnly = true,
+                Secure = true, 
+                SameSite = SameSiteMode.None,
                 Expires = newRefreshToken.Expires
             };
             var httpContext = _httpContextAccessor.HttpContext;
