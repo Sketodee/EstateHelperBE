@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using EstateHelper.Application.Contract.Dtos.ConsultantGroups;
+using EstateHelper.Application.Contract.Dtos.Products;
 using EstateHelper.Application.Contract.Dtos.User;
 using EstateHelper.Domain.Models;
 
@@ -14,6 +15,8 @@ namespace EstateHelperBE.NET
             CreateMap<ConsultantGroup, CreateConsultantGroupDto>().ReverseMap();
             CreateMap<ConsultantGroup, GetConsultantGroupDto>().ReverseMap();
             CreateMap<ConsultantGroup, EditConsultantGroupDto>().ReverseMap();
+
+            CreateMap<Product, CreateProductDto>().ReverseMap();    
         }
     }
 }

@@ -42,16 +42,7 @@ builder.Services.AddDbContext<AppDbContext>(options => options.UseSqlServer(
 
 
 //add business logic services
-builder.Services.AddAutoMapper(typeof(Program).Assembly);
-builder.Services.AddHttpContextAccessor();
-builder.Services.AddScoped<Helpers>();
-builder.Services.AddScoped<IAuthService, AuthService>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-builder.Services.AddScoped<IUserManager, UserManager>();
-builder.Services.AddScoped<IConsultantGroupAppService, ConsultantGroupAppService>();
-builder.Services.AddScoped<IConsultantGroupRepository, ConsultantGroupRepository>();    
-builder.Services.AddScoped<IConsultantGroupManager, ConsultantGroupManager>();
-
+builder.Services.AddProjectServices();
 
 
 //for CORS policy 

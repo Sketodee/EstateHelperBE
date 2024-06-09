@@ -2,6 +2,7 @@
 using EstateHelper.Application.Contract.Dtos.ConsultantGroups;
 using EstateHelper.Application.Contract.Dtos.User;
 using EstateHelper.Application.Contract.Interface;
+using EstateHelper.Domain.HelperFunctions;
 using EstateHelper.Domain.Shared;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -12,7 +13,7 @@ namespace EstateHelperBE.NET.Controllers.v1
     [Route("api/v{version:apiVersion}/[controller]")]
     [ApiController]
     [ApiVersion("1.0")]
-    [Authorize]
+    [Authorize(Roles = $"{RoleNames.Admin}, {RoleNames.GeneralAdmin}")]
     public class ConsultantgroupController : ControllerBase
     {
         private readonly IConsultantGroupAppService _consultantGroupAppService;
@@ -102,6 +103,7 @@ namespace EstateHelperBE.NET.Controllers.v1
             }
         }
 
+        [Authorize]
         [HttpPost("AddOrRemoveMembersToGroup")]
         public async Task<ActionResult<ServiceResponse<GetConsultantGroupDto>>> AddOrRemoveMembersToGroup(AddMembersToConsultantGroupDto input)
         {
@@ -122,6 +124,7 @@ namespace EstateHelperBE.NET.Controllers.v1
             }
         }
 
+        [Authorize(Roles = RoleNames.GeneralAdmin)]
         [HttpPost("DeleteConsultantGroup")]
         public async Task<ActionResult<ServiceResponse<bool>>> DeleteConsultantGroup(string Id)
         {
