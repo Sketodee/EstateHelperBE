@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Identity;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -30,6 +31,29 @@ namespace EstateHelper.Domain.HelperFunctions
             var findUser = await _userManager.FindByNameAsync(getUser);
 
             return findUser;
+        }
+
+        public string GenerateAlphanumericID(int length)
+        {
+            using (var rng = new RNGCryptoServiceProvider())
+            {
+                byte[] bytes = new byte[length * 2]; // Each character takes 2 bytes
+
+                rng.GetBytes(bytes);
+
+                StringBuilder idBuilder = new StringBuilder();
+
+                for (int i = 0; i < length; i++)
+                {
+                    ushort value = BitConverter.ToUInt16(bytes, i * 2);
+                    char c = Convert.ToChar((value % 26) + 65);
+                    idBuilder.Append(c);
+                }
+
+                string id = idBuilder.ToString();
+
+                return id;
+            }
         }
     }
 }

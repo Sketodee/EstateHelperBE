@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Azure;
 using EstateHelper.Application.Contract.Dtos.User;
+using EstateHelper.Domain.HelperFunctions;
 using EstateHelper.Domain.Models;
 using EstateHelper.Domain.User;
 using Microsoft.AspNetCore.Identity;
@@ -9,6 +10,7 @@ using Microsoft.Extensions.Configuration;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,57 +37,28 @@ namespace EstateHelper.EntityFramework.Repository
             _configuration = configuration;
         }
 
-        public async Task<AppUser> SignUpAdmin(CreateUserDto request)
+        public async Task<AppUser> FindByIdAsync(string id)
         {
-            //initialize new referrer generation list 
-            List<int> refGen = new(); 
-            request.ReferrerId ??= 600;
-            refGen.Add(600); 
-            var appUser = _mapper.Map<AppUser>(request);
-            appUser.RefererGeneration = refGen;
-
-            IdentityResult result = await _userManager.CreateAsync(appUser, request.Password) ?? throw new Exception("Error Creating User");
-            if (!result.Succeeded) { throw new Exception($"Can't create user - {result.Errors.FirstOrDefault()?.Description}"); };
-
-            //check if user role already exists
-            if (!await _roleManager.RoleExistsAsync("Admin"))
-                await _roleManager.CreateAsync(new IdentityRole("Admin"));
-
-            if (await _roleManager.RoleExistsAsync("Admin"))
-            {
-                await _userManager.AddToRoleAsync(appUser, "Admin");
-            }
-
-            return appUser;
+            var user = await _context.Users.Where(x => x.Id == id && x.isActive).FirstOrDefaultAsync() ?? throw new Exception($"No user with Id {id}");
+            return user; 
         }
 
-        public async Task<AppUser> SignUpUser(CreateUserDto request)
+        public async Task<List<AppUser>> GetAllAsync()
         {
-            request.ReferrerId ??= 600;
-            var appUser = _mapper.Map<AppUser>(request);
-
-            //find if referrer is in the system
-            var referrer = await _context.Users.Where(x => x.Link == appUser.ReferrerId).FirstOrDefaultAsync() ?? throw new Exception("Referrer not found");
-            var refGen = referrer.RefererGeneration;
-            if (!refGen.Any(n => n == referrer.Link)) refGen.Add(referrer.Link);
-
-            //add referrerId to referrer generation
-            appUser.RefererGeneration = refGen;
-
-            IdentityResult result = await _userManager.CreateAsync(appUser, request.Password) ?? throw new Exception("Error Creating User");
-            if(!result.Succeeded) { throw new Exception($"Can't create user - {result.Errors.FirstOrDefault()?.Description}"); };
-
-            //check if user role already exists
-            if (!await _roleManager.RoleExistsAsync("User"))
-                await _roleManager.CreateAsync(new IdentityRole("User"));
-
-            if (await _roleManager.RoleExistsAsync("User"))
-            {
-                await _userManager.AddToRoleAsync(appUser, "User");
-            }
-
-            return appUser; 
-
+            var allUsers = await _context.Users.ToListAsync();
+            return allUsers; 
         }
+
+        public async Task<AppUser> SingleOrDefaultAsync(Expression<Func<AppUser, bool>> predicate)
+        {
+            var user = await _context.Set<AppUser>().FirstOrDefaultAsync(predicate); //?? throw new Exception("User not found"); 
+            return user; 
+        }
+
+        public Task<AppUser> UpdateAsync(int id)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

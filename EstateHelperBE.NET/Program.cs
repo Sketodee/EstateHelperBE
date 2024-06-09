@@ -1,5 +1,7 @@
 using EstateHelper.Application.Auth;
+using EstateHelper.Application.ConsultantGroups;
 using EstateHelper.Application.Contract.Interface;
+using EstateHelper.Domain.ConsultantGroups;
 using EstateHelper.Domain.HelperFunctions;
 using EstateHelper.Domain.Models;
 using EstateHelper.Domain.User;
@@ -46,13 +48,17 @@ builder.Services.AddScoped<Helpers>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserManager, UserManager>();
+builder.Services.AddScoped<IConsultantGroupAppService, ConsultantGroupAppService>();
+builder.Services.AddScoped<IConsultantGroupRepository, ConsultantGroupRepository>();    
+builder.Services.AddScoped<IConsultantGroupManager, ConsultantGroupManager>();
 
 
 
 //for CORS policy 
 builder.Services.AddCors(p => p.AddPolicy("corspolicy", build =>
 {
-    build.WithOrigins("*").AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin();
+    var allowedOrigins = new[] { "http://localhost:3000"};
+    build.WithOrigins(allowedOrigins).AllowAnyMethod().AllowAnyHeader().AllowCredentials();
 }));
 
 //add versioning for API
@@ -119,8 +125,10 @@ builder.Services.AddAuthentication(auth =>
         ValidAudience = configuration["JWT:ValidAudience"],
         ValidIssuer = configuration["JWT:ValidIssuer"],
         RequireExpirationTime = true,
+        ValidateLifetime = true,
         IssuerSigningKey = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(configuration["JWT:Secret"])),
-        ValidateIssuerSigningKey = true
+        ValidateIssuerSigningKey = true,
+        ClockSkew = TimeSpan.Zero
     };
 });
 
