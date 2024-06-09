@@ -13,4 +13,12 @@ namespace EstateHelper.Domain.HelperFunctions
             GeneralAdmin, Admin, User
         }
     }
+
+    public class RoleNames
+    {
+        public const string GeneralAdmin = nameof(EstateHelperEnums.EstateHelperRoles.GeneralAdmin);
+        public const string Admin = nameof(EstateHelperEnums.EstateHelperRoles.Admin);
+        public const string User = nameof(EstateHelperEnums.EstateHelperRoles.User);
+    }
+
 }

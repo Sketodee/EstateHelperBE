@@ -13,7 +13,9 @@ namespace EstateHelper.Application.Contract.Interface
         Task<CreateUserDto> SignUpUser(CreateUserDto request); 
         Task<CreateUserDto> SignUpGeneralAdmin(CreateUserDto request); 
         Task<LoginResponseDto> Login(LoginRequestDto request);
-        Task<CreateUserDto> GetLoggedInUser();
+        Task<GetLoggedInUserDto> GetLoggedInUser();
         Task<string> GetRefreshToken();
+        Task<string> Logout();
+        Task<bool> AddUserToRole(string roleName, string userId);
     }
 }

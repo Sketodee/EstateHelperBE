@@ -22,7 +22,13 @@ namespace EstateHelper.Application.Auth
             _mapper = mapper;
         }
 
-        public async Task<CreateUserDto> GetLoggedInUser()
+        public async Task<bool> AddUserToRole(string roleName, string userId)
+        {
+            var result = await _userManager.AddUserToRole(roleName, userId);
+            return result; 
+        }
+
+        public async Task<GetLoggedInUserDto> GetLoggedInUser()
         {
             var result = await _userManager.GetLoggedInUser();
             return result;
@@ -40,6 +46,12 @@ namespace EstateHelper.Application.Auth
             return result;
         }
 
+        public async Task<string> Logout()
+        {
+            var result = await _userManager.Logout();   
+            return result;  
+        }
+
         public async Task<CreateUserDto> SignUpGeneralAdmin(CreateUserDto request)
         {
             var result = await _userManager.SignUpGeneralAdmin(request);
@@ -51,5 +63,6 @@ namespace EstateHelper.Application.Auth
             var result = await _userManager.SignUpUser(request);    
             return _mapper.Map<CreateUserDto>(result);
         }
+
     }
 }

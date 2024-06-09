@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Azure;
+using Azure.Core;
 using EstateHelper.Application.Contract.Dtos.Login;
 using EstateHelper.Application.Contract.Dtos.User;
 using EstateHelper.Domain.HelperFunctions;
 using EstateHelper.Domain.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using Serilog;
@@ -28,9 +30,10 @@ namespace EstateHelper.Domain.User
         private readonly IHttpContextAccessor _httpContextAccessor;
         private readonly Helpers _helpers;
         private readonly IMapper _mapper;
+        private readonly RoleManager<IdentityRole> _roleManager;
 
         public UserManager(IUserRepository userRepository, IConfiguration configuration, UserManager<AppUser> appUserManager, IHttpContextAccessor httpContextAccessor, 
-            Helpers helpers, IMapper mapper)
+            Helpers helpers, IMapper mapper, RoleManager<IdentityRole> roleManager)
         {
             _userRepository = userRepository;
             _configuration = configuration;
@@ -38,6 +41,7 @@ namespace EstateHelper.Domain.User
             _httpContextAccessor = httpContextAccessor;
             _helpers = helpers;
             _mapper = mapper;
+            _roleManager = roleManager;
         }
 
         public async Task<LoginResponseDto> Login (LoginRequestDto request)
@@ -74,14 +78,66 @@ namespace EstateHelper.Domain.User
 
         public async Task<AppUser> SignUpGeneralAdmin(CreateUserDto request)
         {
-            var result = await _userRepository.SignUpGeneralAdmin(request);
-            return result;
+            //initialize new referrer generation list 
+            List<int> refGen = new();
+            request.ReferrerId ??= 600;
+            refGen.Add(600);
+            var appUser = _mapper.Map<AppUser>(request);
+            appUser.RefererGeneration = refGen;
+
+            //check to allow only one general admin
+            if (await _roleManager.RoleExistsAsync(EstateHelperEnums.EstateHelperRoles.GeneralAdmin.ToString()))
+            {
+                //await _appUserManager.AddToRoleAsync(appUser, EstateHelperEnums.EstateHelperRoles.GeneralAdmin.ToString());
+                throw new Exception("Can only add one General Admin");
+            }
+
+            IdentityResult result = await _appUserManager.CreateAsync(appUser, request.Password) ?? throw new Exception("Error Creating User");
+            if (!result.Succeeded) { throw new Exception($"Can't create user - {result.Errors.FirstOrDefault()?.Description}"); };
+
+
+            //check if user role already exists
+            if (!await _roleManager.RoleExistsAsync(EstateHelperEnums.EstateHelperRoles.GeneralAdmin.ToString()))
+            {
+                await _roleManager.CreateAsync(new IdentityRole(EstateHelperEnums.EstateHelperRoles.GeneralAdmin.ToString()));
+                await _roleManager.CreateAsync(new IdentityRole(EstateHelperEnums.EstateHelperRoles.Admin.ToString()));
+                await _roleManager.CreateAsync(new IdentityRole(EstateHelperEnums.EstateHelperRoles.User.ToString()));
+
+                //add general admin to role 
+                await _appUserManager.AddToRoleAsync(appUser, EstateHelperEnums.EstateHelperRoles.GeneralAdmin.ToString());
+            }
+               
+
+            return appUser;
         }
 
         public async Task<AppUser> SignUpUser(CreateUserDto request)
         {
-            var result = await _userRepository.SignUpUser(request);
-            return result; 
+            request.ReferrerId ??= 600;
+            var appUser = _mapper.Map<AppUser>(request);
+
+            //find if referrer is in the system
+            var referrer = await _userRepository.SingleOrDefaultAsync(x => x.Link == appUser.ReferrerId) ?? throw new Exception("Referrer not found");
+            var refGen = referrer.RefererGeneration;
+            if (!refGen.Any(n => n == referrer.Link)) refGen.Add(referrer.Link);
+
+            //add referrerId to referrer generation
+            appUser.RefererGeneration = refGen;
+
+            IdentityResult result = await _appUserManager.CreateAsync(appUser, request.Password) ?? throw new Exception("Error Creating User");
+            if (!result.Succeeded) { throw new Exception($"Can't create user - {result.Errors.FirstOrDefault()?.Description}"); };
+
+            //check if user role already exists
+            if (!await _roleManager.RoleExistsAsync(EstateHelperEnums.EstateHelperRoles.User.ToString()))
+                //await _roleManager.CreateAsync(new IdentityRole("User"));
+                throw new Exception("Can't add user because role doesn't exist");
+
+            if (await _roleManager.RoleExistsAsync(EstateHelperEnums.EstateHelperRoles.User.ToString()))
+            {
+                await _appUserManager.AddToRoleAsync(appUser, EstateHelperEnums.EstateHelperRoles.User.ToString());
+            }
+
+            return appUser;
         }
 
         private async Task<JwtSecurityToken> GetToken(AppUser appUser)
@@ -103,7 +159,8 @@ namespace EstateHelper.Domain.User
             var token = new JwtSecurityToken(
                 issuer: _configuration["JWT:ValidIssuer"],
                 audience: _configuration["JWT:ValidAudience"],
-                expires: DateTime.Now.AddMinutes(2),
+                expires: DateTime.Now.AddMinutes(30),
+                //expires: DateTime.Now.AddSeconds(30),
                 claims: authClaims,
                 signingCredentials: new SigningCredentials(authSigningKey, SecurityAlgorithms.HmacSha256)
                 );
@@ -117,6 +174,7 @@ namespace EstateHelper.Domain.User
             {
                 Token = Convert.ToBase64String(RandomNumberGenerator.GetBytes(64)),
                 Expires = DateTime.Now.AddDays(7)
+                //Expires = DateTime.Now.AddMinutes(1)
             };
 
             return refreshToken;
@@ -135,10 +193,13 @@ namespace EstateHelper.Domain.User
             httpContext.Response.Cookies.Append("refreshToken", newRefreshToken.Token, cookieOptions);
         }
 
-        public async Task<CreateUserDto> GetLoggedInUser()
+        public async Task<GetLoggedInUserDto> GetLoggedInUser()
         {
             var result = await _helpers.ReturnLoggedInUser();
-            return _mapper.Map<CreateUserDto>(result);  
+            return new GetLoggedInUserDto
+            {
+                FullName = result?.Surname + " "+  result?.FirstName
+            };
         }
 
         public async Task<string> GetRefreshToken()
@@ -147,7 +208,7 @@ namespace EstateHelper.Domain.User
             var httpContext = _httpContextAccessor.HttpContext;
             var refreshToken = httpContext.Request.Cookies.TryGetValue("refreshToken", out string value) ? value : null;
             //check the user that owns the refresh token being sent 
-            var user = (await _userRepository.GetAllAsync()).FirstOrDefault(x => x.RefreshToken == refreshToken) ?? throw new Exception("Invalid Refresh Token"); 
+            var user = await _userRepository.SingleOrDefaultAsync(x => x.RefreshToken == refreshToken) ?? throw new Exception("Invalid Refresh Token"); 
             //_ = user.RefreshToken.Equals(refreshToken) ? true : throw new Exception("Invalid Refresh Token");
             _ = user.TokenExpires < DateTime.Now ? throw new Exception("Token Expired") : false;
 
@@ -164,6 +225,38 @@ namespace EstateHelper.Domain.User
             await _appUserManager.UpdateAsync(user);
 
             return returnedToken;
+        }
+
+        public async Task<string> Logout()
+        {
+            var httpContext = _httpContextAccessor.HttpContext;
+            var token = httpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+
+            if (string.IsNullOrEmpty(token))
+            {
+                return "Invalid token";
+            }
+        
+            // Clear the authToken cookie
+            httpContext.Response.Cookies.Delete("refreshToken");
+
+            // Optionally, you could log the user out from the authentication scheme
+            // await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+
+            return "Logout sucessful";
+        }
+
+        public async Task<bool> AddUserToRole(string roleName, string userId)
+        {
+            //find if user exists 
+            var user = await _userRepository.SingleOrDefaultAsync(x => x.Id == userId) ?? throw new Exception("User not found");
+            //find if role exist 
+            if (!await _roleManager.RoleExistsAsync(roleName)) throw new Exception("Role doesn't exist");
+            if (await _appUserManager.IsInRoleAsync(user, roleName)) throw new Exception("User already exist in role");
+            var result = await _appUserManager.AddToRoleAsync(user, roleName);
+            if (!result.Succeeded) throw new Exception("Can't add user to role"); 
+            return result.Succeeded;    
+
         }
     }
 }

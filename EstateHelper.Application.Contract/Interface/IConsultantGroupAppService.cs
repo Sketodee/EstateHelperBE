@@ -10,5 +10,10 @@ namespace EstateHelper.Application.Contract.Interface
     public interface IConsultantGroupAppService
     {
         Task<GetConsultantGroupDto> CreateAsync(CreateConsultantGroupDto input);
+        Task<GetConsultantGroupDto> AddOrRemoveMembersToGroup(AddMembersToConsultantGroupDto input);
+        Task<bool> DeleteConsultantGroup(string Id);
+        Task<List<GetConsultantGroupDto>> GetAllConsultantGroup();
+        Task<GetConsultantGroupDto> EditConsultantGroup(EditConsultantGroupDto input);
+        Task<List<GetConsultantGroupDto>> GetConsultantGroupByFilter(string? Id, string? Name, string? Email);
     }
 }

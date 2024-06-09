@@ -1,7 +1,10 @@
 ﻿using EstateHelper.Application.Contract.Dtos.Login;
 using EstateHelper.Application.Contract.Dtos.User;
 using EstateHelper.Application.Contract.Interface;
+using EstateHelper.Domain.HelperFunctions;
+using EstateHelper.Domain.Models;
 using EstateHelper.Domain.Shared;
+using EstateHelper.Domain.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -83,9 +86,9 @@ namespace EstateHelperBE.NET.Controllers.v1
 
         [Authorize]
         [HttpGet("GetloggedInUser")]
-        public async Task<ActionResult<ServiceResponse<CreateUserDto>>> GetLoggedInUser()
+        public async Task<ActionResult<ServiceResponse<GetLoggedInUserDto>>> GetLoggedInUser()
         {
-            ServiceResponse<CreateUserDto> response = new();
+            ServiceResponse<GetLoggedInUserDto> response = new();
             try
             {
                 var result = await _authService.GetLoggedInUser();
@@ -121,5 +124,48 @@ namespace EstateHelperBE.NET.Controllers.v1
                 return StatusCode(500, response);
             }
         }
+
+        [Authorize]
+        [HttpPost("Logout")]
+        public async Task<ActionResult<string>> Logout()
+        {
+            ServiceResponse<string> response = new();
+            try
+            {
+                var result = await _authService.Logout();
+                response.Data = result;
+                response.Success = true;
+                response.Message = "Successfully logged out";
+                return StatusCode(200, response);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+                return StatusCode(500, response);
+            }
+        }
+
+        [Authorize(Roles = RoleNames.GeneralAdmin)]
+        [HttpPost("AddUserToRole")]
+        public async Task<ActionResult<ServiceResponse<bool>>> AddUserToRole(string roleName, string Id)
+        {
+            ServiceResponse<bool> response = new();
+            try
+            {
+                var result = await _authService.AddUserToRole(roleName, Id);
+                response.Data = result;
+                response.Success = true;
+                response.Message = "User role successfully updated";
+                return StatusCode(200, response);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+                return StatusCode(500, response);
+            }
+        }
+
     }
 }

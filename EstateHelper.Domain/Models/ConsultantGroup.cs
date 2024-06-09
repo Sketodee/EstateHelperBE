@@ -12,6 +12,7 @@ namespace EstateHelper.Domain.Models
     {
         public string Id { get; set; }  = Guid.NewGuid().ToString();    
         public string Name { get; set; }
+        public string Email { get; set; }   
         public string AccountDetails { get; set; } = string.Empty;
         public string BankProvider { get; set; } = string.Empty;
         public string AccountName { get; set; } = string.Empty;

@@ -11,5 +11,10 @@ namespace EstateHelper.Domain.ConsultantGroups
     public interface IConsultantGroupManager
     {
         Task<ConsultantGroup> CreateAsync(CreateConsultantGroupDto input);
+        Task<ConsultantGroup> AddOrRemoveMembersToGroup(AddMembersToConsultantGroupDto input);
+        Task<bool> DeleteConsultantGroup(string Id);
+        Task<List<ConsultantGroup>> GetAllConsultantGroup();
+        Task<ConsultantGroup> EditConsultantGroup(EditConsultantGroupDto input);
+        Task<List<ConsultantGroup>> GetConsultantGroupByFilter(string? Id, string? Name, string? Email);
     }
 }
