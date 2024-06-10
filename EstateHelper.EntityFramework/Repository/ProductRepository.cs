@@ -1,4 +1,5 @@
-﻿using EstateHelper.Domain.Models;
+﻿using EstateHelper.Application.Contract;
+using EstateHelper.Domain.Models;
 using EstateHelper.Domain.Products;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -7,6 +8,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace EstateHelper.EntityFramework.Repository
 {
@@ -33,14 +35,7 @@ namespace EstateHelper.EntityFramework.Repository
             return result > 0;
         }
 
-        public async Task<List<Product>> GetAllAsync()
-        {
-            var products = await _context.Products.Where(x => !x.isDeleted).ToListAsync();
-            if (products.Count == 0) throw new Exception("No Product found");
-            return products;
-        }
-
-        public async Task<List<Product>> GetConsultantGroupByFilter(string? Id, string? Name)
+        public async Task<List<Product>> GetAllAsync(string? Id, string? Name, PaginationParamaters pagination)
         {
             var query = await _context.Products.Where(x => !x.isDeleted).ToListAsync();
             if (query.Count == 0) throw new Exception("No Product found");
@@ -52,7 +47,8 @@ namespace EstateHelper.EntityFramework.Repository
             {
                 query = query.Where(x => x.Name == Name).ToList();
             }
-            if (query.Count == 0) throw new Exception("No Product found");
+            if (query.Count == 0) throw new Exception("No Consultant Group found");
+            query = query.Skip((pagination.PageNumber - 1) * pagination.PageSize).Take(pagination.PageSize).OrderByDescending(x => x.CreatedOn).ToList();
             return query;
         }
 

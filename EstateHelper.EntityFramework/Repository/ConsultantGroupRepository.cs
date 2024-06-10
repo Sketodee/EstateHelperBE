@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Azure.Core;
+using EstateHelper.Application.Contract;
 using EstateHelper.Application.Contract.Dtos.ConsultantGroups;
 using EstateHelper.Domain.ConsultantGroups;
 using EstateHelper.Domain.HelperFunctions;
@@ -40,31 +41,25 @@ namespace EstateHelper.EntityFramework.Repository
             return result>0;
         }
 
-        public async Task<List<ConsultantGroup>> GetAllAsync()
+        public async Task<List<ConsultantGroup>> GetAllAsync(string? Id, string? Name, string? Email, PaginationParamaters pagination)
         {
-            var consultantGroups = await _context.ConsultantGroups.Where(x => !x.isDeleted).ToListAsync(); 
-            if(consultantGroups.Count== 0) throw new Exception("No Consultant Group found");
-            return consultantGroups; 
-        }
-
-        public async Task<List<ConsultantGroup>> GetConsultantGroupByFilter(string? Id, string? Name, string? Email)
-        {
-            var query = await _context.ConsultantGroups.Where(x => !x.isDeleted).ToListAsync();
-            if(query.Count == 0) throw new Exception("No Consultant Group found");
-            if(!string.IsNullOrEmpty(Id))
+            var query = await _context.ConsultantGroups.Where(x => !x.isDeleted).ToListAsync(); 
+            if(query.Count== 0) throw new Exception("No Consultant Group found");
+            if (!string.IsNullOrEmpty(Id))
             {
                 query = query.Where(x => x.Id == Id).ToList();
             }
-            if(!string.IsNullOrEmpty(Name))
+            if (!string.IsNullOrEmpty(Name))
             {
-                query = query.Where(x => x.Name == Name).ToList();  
+                query = query.Where(x => x.Name == Name).ToList();
             }
-            if(!string.IsNullOrEmpty(Email))
+            if (!string.IsNullOrEmpty(Email))
             {
                 query = query.Where(x => x.Email == Email).ToList();
             }
             if (query.Count == 0) throw new Exception("No Consultant Group found");
-            return query;
+            query = query.Skip((pagination.PageNumber - 1) * pagination.PageSize).Take(pagination.PageSize).OrderByDescending(x => x.CreatedOn).ToList();
+            return query; 
         }
 
         public async Task<ConsultantGroup> SingleOrDefaultAsync(Expression<Func<ConsultantGroup, bool>> predicate)

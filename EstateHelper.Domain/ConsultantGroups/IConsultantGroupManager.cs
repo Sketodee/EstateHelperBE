@@ -1,4 +1,5 @@
-﻿using EstateHelper.Application.Contract.Dtos.ConsultantGroups;
+﻿using EstateHelper.Application.Contract;
+using EstateHelper.Application.Contract.Dtos.ConsultantGroups;
 using EstateHelper.Domain.Models;
 using System;
 using System.Collections.Generic;
@@ -13,8 +14,8 @@ namespace EstateHelper.Domain.ConsultantGroups
         Task<ConsultantGroup> CreateAsync(CreateConsultantGroupDto input);
         Task<ConsultantGroup> AddOrRemoveMembersToGroup(AddMembersToConsultantGroupDto input);
         Task<bool> DeleteConsultantGroup(string Id);
-        Task<List<ConsultantGroup>> GetAllConsultantGroup();
+        Task<List<ConsultantGroup>> GetAllConsultantGroup(string? Id, string? Name, string? Email, PaginationParamaters pagination);
         Task<ConsultantGroup> EditConsultantGroup(EditConsultantGroupDto input);
-        Task<List<ConsultantGroup>> GetConsultantGroupByFilter(string? Id, string? Name, string? Email);
+      
     }
 }

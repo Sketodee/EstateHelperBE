@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EstateHelper.Application.Contract;
 using EstateHelper.Application.Contract.Dtos.ConsultantGroups;
 using EstateHelper.Domain.HelperFunctions;
 using EstateHelper.Domain.Models;
@@ -132,16 +133,11 @@ namespace EstateHelper.Domain.ConsultantGroups
             return result;  
         }
 
-        public async Task<List<ConsultantGroup>> GetAllConsultantGroup()
+        public async Task<List<ConsultantGroup>> GetAllConsultantGroup(string? Id, string? Name, string? Email, PaginationParamaters pagination)
         {
-            var result = await _consultantGroupRepository.GetAllAsync() ?? throw new Exception("No Consultant Group found"); 
+            var result = await _consultantGroupRepository.GetAllAsync(Id, Name, Email, pagination) ?? throw new Exception("No Consultant Group found"); 
             return result; 
         }
 
-        public async Task<List<ConsultantGroup>> GetConsultantGroupByFilter(string? Id, string? Name, string? Email)
-        {
-           var result = await _consultantGroupRepository.GetConsultantGroupByFilter(Id, Name, Email);
-            return result;  
-        }
     }
 }

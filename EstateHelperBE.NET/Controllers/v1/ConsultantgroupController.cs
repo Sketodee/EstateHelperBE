@@ -1,4 +1,5 @@
 ﻿using EstateHelper.Application.Auth;
+using EstateHelper.Application.Contract;
 using EstateHelper.Application.Contract.Dtos.ConsultantGroups;
 using EstateHelper.Application.Contract.Dtos.User;
 using EstateHelper.Application.Contract.Interface;
@@ -24,12 +25,12 @@ namespace EstateHelperBE.NET.Controllers.v1
         }
 
         [HttpGet("GetAllConsultantGroup")]
-        public async Task<ActionResult<ServiceResponse<List<GetConsultantGroupDto>>>> GetAllConsultantGroup()
+        public async Task<ActionResult<ServiceResponse<List<GetConsultantGroupDto>>>> GetAllConsultantGroup(string? Id, string? Name, string? Email,[FromQuery] PaginationParamaters pagination)
         {
             ServiceResponse<List<GetConsultantGroupDto>> response = new();
             try
             {
-                var result = await _consultantGroupAppService.GetAllConsultantGroup(); 
+                var result = await _consultantGroupAppService.GetAllConsultantGroup(Id, Name, Email, pagination); 
                 response.Data = result; 
                 response.Success = true ;
                 response.Message = "Groups successfully fetched";
@@ -83,25 +84,6 @@ namespace EstateHelperBE.NET.Controllers.v1
             }
         }
 
-        [HttpPost("GetConsultantGroupByFilter")]
-        public async Task<ActionResult<ServiceResponse<List<GetConsultantGroupDto>>>> GetConsultantGroupByFilter(string? Id, string? Name, string? Email)
-        {
-            ServiceResponse<List<GetConsultantGroupDto>> response = new();
-            try
-            {
-                var result = await _consultantGroupAppService.GetConsultantGroupByFilter(Id, Name, Email);
-                response.Data = result;
-                response.Success = true;
-                response.Message = "Consultant Group successfully fetched";
-                return StatusCode(200, response);
-            }
-            catch (Exception ex)
-            {
-                response.Success = false;
-                response.Message = ex.Message;
-                return StatusCode(500, response);
-            }
-        }
 
         [Authorize]
         [HttpPost("AddOrRemoveMembersToGroup")]

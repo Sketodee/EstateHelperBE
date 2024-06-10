@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using EstateHelper.Application.Contract;
 using EstateHelper.Application.Contract.Dtos.ConsultantGroups;
 using EstateHelper.Application.Contract.Interface;
 using EstateHelper.Domain.ConsultantGroups;
+using EstateHelper.Domain.HelperFunctions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,16 +47,12 @@ namespace EstateHelper.Application.ConsultantGroups
             return _mapper.Map<GetConsultantGroupDto>(result); 
         }
 
-        public async Task<List<GetConsultantGroupDto>> GetAllConsultantGroup()
+        public async Task<List<GetConsultantGroupDto>> GetAllConsultantGroup(string? Id, string? Name, string? Email, PaginationParamaters pagination)
         {
-           var result= await _consultantGroupManager.GetAllConsultantGroup();
+           var result= await _consultantGroupManager.GetAllConsultantGroup(Id, Name, Email, pagination);
             return _mapper.Map<List<GetConsultantGroupDto>>(result);
         }
 
-        public async Task<List<GetConsultantGroupDto>> GetConsultantGroupByFilter(string? Id, string? Name, string? Email)
-        {
-            var result = await _consultantGroupManager.GetConsultantGroupByFilter(Id, Name, Email);
-            return _mapper.Map<List<GetConsultantGroupDto>>(result) ;   
-        }
+       
     }
 }
