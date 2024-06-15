@@ -46,13 +46,17 @@ namespace EstateHelper.EntityFramework
 
 
             modelBuilder.HasSequence<int>("LinkSequence", schema: "dbo")
-        .StartsAt(600)
-        .IncrementsBy(1);
+                .StartsAt(600)
+                .IncrementsBy(1);
 
             modelBuilder.Entity<AppUser>()
-        .Property(e => e.Link)
-        .HasDefaultValueSql("NEXT VALUE FOR dbo.LinkSequence");
+                .Property(e => e.Link)
+                .HasDefaultValueSql("NEXT VALUE FOR dbo.LinkSequence");
 
+            modelBuilder.Entity<Product>()
+            .HasOne(p => p.Pricing)
+            .WithOne(p => p.Product)
+            .HasForeignKey<Pricing>(p => p.ProductId);
 
         }
     }

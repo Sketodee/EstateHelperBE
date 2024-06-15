@@ -17,6 +17,11 @@ namespace EstateHelperBE.NET
             CreateMap<ConsultantGroup, EditConsultantGroupDto>().ReverseMap();
 
             CreateMap<Product, CreateProductDto>().ReverseMap();    
+            CreateMap<Product, EditProductDto>().ReverseMap();    
+            CreateMap<Product, GetProductDto>().ReverseMap();    
+
+            CreateMap<Pricing, PricingDto>().ReverseMap();  
+            CreateMap<Pricing, GetPricingDto>().ReverseMap();  
         }
     }
 }

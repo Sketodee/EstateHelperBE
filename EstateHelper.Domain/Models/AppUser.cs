@@ -28,4 +28,5 @@ namespace EstateHelper.Domain.Models
         public DateTime TokenExpires { get; set; }
 
     }
+
 }

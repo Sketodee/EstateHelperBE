@@ -4,6 +4,7 @@ using EstateHelper.EntityFramework;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EstateHelper.EntityFramework.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240615135143_createdProductEntity")]
+    partial class createdProductEntity
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -216,28 +219,6 @@ namespace EstateHelper.EntityFramework.Migrations
                     b.ToTable("ConsultantGroups");
                 });
 
-            modelBuilder.Entity("EstateHelper.Domain.Models.Pricing", b =>
-                {
-                    b.Property<string>("ProductId")
-                        .HasColumnType("nvarchar(450)");
-
-                    b.Property<decimal?>("Development")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal>("Price")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<decimal?>("Survey")
-                        .HasColumnType("decimal(18,2)");
-
-                    b.Property<int>("Unit")
-                        .HasColumnType("int");
-
-                    b.HasKey("ProductId");
-
-                    b.ToTable("Pricing");
-                });
-
             modelBuilder.Entity("EstateHelper.Domain.Models.Product", b =>
                 {
                     b.Property<string>("Id")
@@ -424,15 +405,35 @@ namespace EstateHelper.EntityFramework.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("EstateHelper.Domain.Models.Pricing", b =>
+            modelBuilder.Entity("EstateHelper.Domain.Models.Product", b =>
                 {
-                    b.HasOne("EstateHelper.Domain.Models.Product", "Product")
-                        .WithOne("Pricing")
-                        .HasForeignKey("EstateHelper.Domain.Models.Pricing", "ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.OwnsOne("EstateHelper.Domain.Models.Pricing", "Pricing", b1 =>
+                        {
+                            b1.Property<string>("ProductId")
+                                .HasColumnType("nvarchar(450)");
 
-                    b.Navigation("Product");
+                            b1.Property<decimal?>("Development")
+                                .HasColumnType("decimal(18,2)");
+
+                            b1.Property<decimal>("Price")
+                                .HasColumnType("decimal(18,2)");
+
+                            b1.Property<decimal?>("Survey")
+                                .HasColumnType("decimal(18,2)");
+
+                            b1.Property<int>("Unit")
+                                .HasColumnType("int");
+
+                            b1.HasKey("ProductId");
+
+                            b1.ToTable("Products");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ProductId");
+                        });
+
+                    b.Navigation("Pricing")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -483,12 +484,6 @@ namespace EstateHelper.EntityFramework.Migrations
                         .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("EstateHelper.Domain.Models.Product", b =>
-                {
-                    b.Navigation("Pricing")
                         .IsRequired();
                 });
 #pragma warning restore 612, 618

@@ -12,10 +12,9 @@ namespace EstateHelper.Domain.Products
 {
     public interface IProductManager
     {
-        Task<Product> UpdateAsync(EditProductDto input);
-        Task<Product> CreateAsync(CreateProductDto input);
-        Task<bool> DeleteAsync(string Id);
-        Task<List<Product>> GetAllAsync(string? Id, string? Name, PaginationParamaters pagination);
-        Task<Product> SingleOrDefaultAsync(Expression<Func<Product, bool>> predicate);
+        Task<Product> Update(EditProductDto input);
+        Task<Product> Create(CreateProductDto input);
+        Task<bool> Delete(string Id);
+        Task<List<Product>> GetAllProducts(string? Id, string? Name, PaginationParamaters pagination);
     }
 }

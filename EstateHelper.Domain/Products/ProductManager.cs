@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EstateHelper.Application.Contract;
 using EstateHelper.Application.Contract.Dtos.Products;
+using EstateHelper.Domain.ConsultantGroups;
 using EstateHelper.Domain.HelperFunctions;
 using EstateHelper.Domain.Models;
 using System;
@@ -33,7 +34,7 @@ namespace EstateHelper.Domain.Products
         }
 
 
-        public async Task<Product> CreateAsync(CreateProductDto input)
+        public async Task<Product> Create(CreateProductDto input)
         {
             //check if product name exists 
             _ = await _productRepository.SingleOrDefaultAsync(x => x.Name == input.Name) == null ? true : throw new Exception("Product name already exist"); 
@@ -42,24 +43,28 @@ namespace EstateHelper.Domain.Products
             return result;
         }
 
-        public Task<bool> DeleteAsync(string Id)
+        public async Task<bool> Delete(string Id)
         {
-            throw new NotImplementedException();
+            var product = await _productRepository.SingleOrDefaultAsync(x => x.Id == Id) ?? throw new Exception("Product not found");
+            return await _productRepository.DeleteAsync(product);   
         }
 
-        public Task<List<Product>> GetAllAsync(string? Id, string? Name, PaginationParamaters pagination)
+        public async Task<List<Product>> GetAllProducts(string? Id, string? Name, PaginationParamaters pagination)
         {
-            throw new NotImplementedException();
+            var product = await _productRepository.GetAllAsync(Id, Name, pagination) ?? throw new Exception("No product found");
+            return product; 
         }
 
-        public Task<Product> SingleOrDefaultAsync(Expression<Func<Product, bool>> predicate)
-        {
-            throw new NotImplementedException();
-        }
 
-        public Task<Product> UpdateAsync(EditProductDto input)
+        public async Task<Product> Update(EditProductDto input)
         {
-            throw new NotImplementedException();
+            //check if product name exists 
+            var product = await _productRepository.SingleOrDefaultAsync(x => x.Id == input.Id) ?? throw new Exception("Product not found");
+            //check if name and email exist
+            bool nameExist = await _productRepository.SingleOrDefaultAsync(x => x.Name == input.Name) == null && product.Name != input.Name ? true : throw new Exception("Name already exist");
+            var newProduct = _mapper.Map(input, product); 
+            var result = await _productRepository.UpdateAsync(newProduct);
+            return result;
         }
     }
 }

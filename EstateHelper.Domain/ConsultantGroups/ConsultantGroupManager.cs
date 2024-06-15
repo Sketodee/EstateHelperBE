@@ -53,7 +53,7 @@ namespace EstateHelper.Domain.ConsultantGroups
             var newList = input.addMembers ? existingList.Union(input.MembersId).ToList() : existingList.Except(input.MembersId).ToList();
 
             consultant.MembersId = newList;
-            consultant.LastUpdatedBy = user.Id;
+            consultant.LastUpdatedBy = user?.Id;
             consultant.LastUpdatedOn = DateTime.Now; 
             var result = await _consultantGroupRepository.UpdateAsync(consultant);  
             return result;  
@@ -89,7 +89,7 @@ namespace EstateHelper.Domain.ConsultantGroups
 
             var newGroup = _mapper.Map<ConsultantGroup>(input);
             newGroup.Code = code;
-            newGroup.CreatedBy = user.Id;
+            newGroup.CreatedBy = user?.Id;
 
             var result = await _consultantGroupRepository.CreateAsync(newGroup);
             return result;
@@ -104,7 +104,7 @@ namespace EstateHelper.Domain.ConsultantGroups
             var consultant = await _consultantGroupRepository.SingleOrDefaultAsync(x => x.Id == Id) ?? throw new Exception("Consultant Group not found");
 
             consultant.isDeleted = true;
-            consultant.DeletedBy = user.Id;
+            consultant.DeletedBy = user?.Id;
             consultant.DeletedOn = DateTime.Now; 
 
             var result = await _consultantGroupRepository.DeleteAsync(consultant);
@@ -116,18 +116,19 @@ namespace EstateHelper.Domain.ConsultantGroups
         {
             //get logged in user 
             var user = await _helpers.ReturnLoggedInUser();
-            //check if name and email exist
-            bool nameExist = await _consultantGroupRepository.SingleOrDefaultAsync(x => x.Name == input.Name) == null ? true : throw new Exception("Name is taken");
-            bool emailExist = await _consultantGroupRepository.SingleOrDefaultAsync(x => x.Email == input.Email) == null ? true : throw new Exception("Email exists");
             //check if the consultant group already exists 
             var consultant = await _consultantGroupRepository.SingleOrDefaultAsync(x => x.Id == input.Id) ?? throw new Exception("Consultant Group not found");
+            
+            //check if name and email exist
+            bool nameExist = await _consultantGroupRepository.SingleOrDefaultAsync(x => x.Name == input.Name) == null && consultant.Name != input.Name ? true : throw new Exception("Name is taken");
+            bool emailExist = await _consultantGroupRepository.SingleOrDefaultAsync(x => x.Email == input.Email) == null && consultant.Email != input.Email ? true : throw new Exception("Email exists");
             //find if accoutnManager exists 
             var accountManagerExist = await _userRepository.SingleOrDefaultAsync(x => x.Id == input.AccountManagerId && x.isActive) ?? throw new Exception("Account Manager not found");
             //check if account manager had admin role 
             bool _ = await _appUserManager.IsInRoleAsync(accountManagerExist, EstateHelperEnums.EstateHelperRoles.Admin.ToString()) ? true : throw new Exception("Account Manager has no admin right");
             //var newDetails = _mapper.Map<ConsultantGroup>(input);           
             var newDetails = _mapper.Map(input, consultant);
-            newDetails.LastUpdatedBy = user.Id;
+            newDetails.LastUpdatedBy = user?.Id;
             newDetails.LastUpdatedOn = DateTime.Now;
             var result = await _consultantGroupRepository.UpdateAsync(newDetails); 
             return result;  

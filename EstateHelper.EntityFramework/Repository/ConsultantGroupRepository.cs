@@ -64,7 +64,7 @@ namespace EstateHelper.EntityFramework.Repository
 
         public async Task<ConsultantGroup> SingleOrDefaultAsync(Expression<Func<ConsultantGroup, bool>> predicate)
         {
-            var consultantGroup = await _context.Set<ConsultantGroup>().Where(x=> !x.isDeleted).FirstOrDefaultAsync(predicate) ?? throw new Exception("Consultant group not found");
+            var consultantGroup = await _context.Set<ConsultantGroup>().Where(x=> !x.isDeleted).FirstOrDefaultAsync(predicate);
             return consultantGroup;
         }
 
