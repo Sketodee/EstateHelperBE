@@ -12,7 +12,8 @@ namespace EstateHelper.Application.Contract.Interface
         Task<GetConsultantGroupDto> CreateAsync(CreateConsultantGroupDto input);
         Task<GetConsultantGroupDto> AddOrRemoveMembersToGroup(AddMembersToConsultantGroupDto input);
         Task<bool> DeleteConsultantGroup(string Id);
-        Task<List<GetConsultantGroupDto>> GetAllConsultantGroup(string? Id, string? Name, string? Email, PaginationParamaters pagination);
+        Task<PagedResultDto<List<GetConsultantGroupDto>>> GetAllConsultantGroup(PaginationParamaters pagination);
+        Task<PagedResultDto<List<GetConsultantGroupDto>>> GetAllByFilter(string? Id, string? queryParam, PaginationParamaters pagination);
         Task<GetConsultantGroupDto> EditConsultantGroup(EditConsultantGroupDto input);
         
     }

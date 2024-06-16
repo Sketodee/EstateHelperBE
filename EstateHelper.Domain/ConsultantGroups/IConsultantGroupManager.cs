@@ -14,7 +14,8 @@ namespace EstateHelper.Domain.ConsultantGroups
         Task<ConsultantGroup> CreateAsync(CreateConsultantGroupDto input);
         Task<ConsultantGroup> AddOrRemoveMembersToGroup(AddMembersToConsultantGroupDto input);
         Task<bool> DeleteConsultantGroup(string Id);
-        Task<List<ConsultantGroup>> GetAllConsultantGroup(string? Id, string? Name, string? Email, PaginationParamaters pagination);
+        Task<PagedResultDto<List<ConsultantGroup>>> GetAllConsultantGroup(PaginationParamaters pagination);
+        Task<PagedResultDto<List<ConsultantGroup>>> GetAllByFilter(string? Id, string? queryParam, PaginationParamaters pagination); 
         Task<ConsultantGroup> EditConsultantGroup(EditConsultantGroupDto input);
       
     }

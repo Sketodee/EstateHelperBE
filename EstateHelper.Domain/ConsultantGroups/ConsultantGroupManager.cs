@@ -134,9 +134,15 @@ namespace EstateHelper.Domain.ConsultantGroups
             return result;  
         }
 
-        public async Task<List<ConsultantGroup>> GetAllConsultantGroup(string? Id, string? Name, string? Email, PaginationParamaters pagination)
+        public async Task<PagedResultDto<List<ConsultantGroup>>> GetAllByFilter(string? Id, string? queryParam, PaginationParamaters pagination)
         {
-            var result = await _consultantGroupRepository.GetAllAsync(Id, Name, Email, pagination) ?? throw new Exception("No Consultant Group found"); 
+            var result = await _consultantGroupRepository.GetAllByFilter(Id, queryParam, pagination);
+            return result;  
+        }
+
+        public async Task<PagedResultDto<List<ConsultantGroup>>> GetAllConsultantGroup(PaginationParamaters pagination)
+        {
+            var result = await _consultantGroupRepository.GetAllAsync(pagination) ?? throw new Exception("No Consultant Group found"); 
             return result; 
         }
 

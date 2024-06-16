@@ -11,6 +11,7 @@ namespace EstateHelperBE.NET
         public AutoMapperProfile()
         {
             CreateMap<AppUser, CreateUserDto>().ForMember(dest => dest.Email, opts => opts.MapFrom(src => src.UserName)) .ReverseMap();
+            CreateMap<AppUser, GetUserDto>().ForMember(dest => dest.Email, opts => opts.MapFrom(src => src.UserName)) .ReverseMap();
 
             CreateMap<ConsultantGroup, CreateConsultantGroupDto>().ReverseMap();
             CreateMap<ConsultantGroup, GetConsultantGroupDto>().ReverseMap();

@@ -25,14 +25,34 @@ namespace EstateHelperBE.NET.Controllers.v1
         }
 
         [HttpGet("GetAllConsultantGroup")]
-        public async Task<ActionResult<ServiceResponse<List<GetConsultantGroupDto>>>> GetAllConsultantGroup(string? Id, string? Name, string? Email,[FromQuery] PaginationParamaters pagination)
+        public async Task<ActionResult<ServiceResponse<PagedResultDto<List<GetConsultantGroupDto>>>>> GetAllConsultantGroup([FromQuery] PaginationParamaters pagination)
         {
-            ServiceResponse<List<GetConsultantGroupDto>> response = new();
+            ServiceResponse<PagedResultDto<List<GetConsultantGroupDto>>> response = new();
             try
             {
-                var result = await _consultantGroupAppService.GetAllConsultantGroup(Id, Name, Email, pagination); 
+                var result = await _consultantGroupAppService.GetAllConsultantGroup(pagination); 
                 response.Data = result; 
                 response.Success = true ;
+                response.Message = "Groups successfully fetched";
+                return StatusCode(200, response);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+                return StatusCode(500, response);
+            }
+        }
+
+        [HttpGet("GetConsultantGroupByFilter")]
+        public async Task<ActionResult<ServiceResponse<PagedResultDto<List<GetConsultantGroupDto>>>>> GetConsultantGroupByFilter(string? Id, string? queryParam,[FromQuery] PaginationParamaters pagination)
+        {
+            ServiceResponse<PagedResultDto<List<GetConsultantGroupDto>>> response = new();
+            try
+            {
+                var result = await _consultantGroupAppService.GetAllByFilter(Id, queryParam, pagination);
+                response.Data = result;
+                response.Success = true;
                 response.Message = "Groups successfully fetched";
                 return StatusCode(200, response);
             }

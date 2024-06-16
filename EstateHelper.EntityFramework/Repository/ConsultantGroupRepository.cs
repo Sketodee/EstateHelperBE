@@ -5,6 +5,7 @@ using EstateHelper.Application.Contract.Dtos.ConsultantGroups;
 using EstateHelper.Domain.ConsultantGroups;
 using EstateHelper.Domain.HelperFunctions;
 using EstateHelper.Domain.Models;
+using EstateHelper.Domain.Shared;
 using EstateHelper.Domain.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -41,25 +42,37 @@ namespace EstateHelper.EntityFramework.Repository
             return result>0;
         }
 
-        public async Task<List<ConsultantGroup>> GetAllAsync(string? Id, string? Name, string? Email, PaginationParamaters pagination)
+        public async Task<PagedResultDto<List<ConsultantGroup>>> GetAllAsync(PaginationParamaters pagination)
         {
-            var query = await _context.ConsultantGroups.Where(x => !x.isDeleted).ToListAsync(); 
-            if(query.Count== 0) throw new Exception("No Consultant Group found");
+            var total = await _context.ConsultantGroups.Where(x => !x.isDeleted).ToListAsync();
+            if (total.Count == 0) throw new Exception("No Consultant Group found");
+            var query = total.Skip((pagination.PageNumber - 1) * pagination.PageSize).Take(pagination.PageSize).OrderByDescending(x => x.CreatedOn).ToList();
+            return new PagedResultDto<List<ConsultantGroup>>
+            {
+                TotalCount = total.Count,
+                Data = query
+            };
+        }
+
+        public async Task<PagedResultDto<List<ConsultantGroup>>> GetAllByFilter(string? Id, string? queryParam, PaginationParamaters pagination)
+        {
+            var total = await _context.ConsultantGroups.Where(x => !x.isDeleted).ToListAsync();
+            if (total.Count == 0) throw new Exception("No Consultant Group found");
             if (!string.IsNullOrEmpty(Id))
             {
-                query = query.Where(x => x.Id == Id).ToList();
+                total = total.Where(x => x.Id == Id).ToList();
             }
-            if (!string.IsNullOrEmpty(Name))
+            if (!string.IsNullOrEmpty(queryParam))
             {
-                query = query.Where(x => x.Name == Name).ToList();
+                total = total.Where(x => x.Name.ToLower().Contains(queryParam.ToLower()) || x.Email.ToLower().Contains(queryParam.ToLower())).ToList();
             }
-            if (!string.IsNullOrEmpty(Email))
+            if (total.Count == 0) throw new Exception("No Consultant Group found");
+            var query = total.Skip((pagination.PageNumber - 1) * pagination.PageSize).Take(pagination.PageSize).OrderByDescending(x => x.CreatedOn).ToList();
+            return new PagedResultDto<List<ConsultantGroup>>
             {
-                query = query.Where(x => x.Email == Email).ToList();
-            }
-            if (query.Count == 0) throw new Exception("No Consultant Group found");
-            query = query.Skip((pagination.PageNumber - 1) * pagination.PageSize).Take(pagination.PageSize).OrderByDescending(x => x.CreatedOn).ToList();
-            return query; 
+                TotalCount = total.Count,
+                Data = query
+            };
         }
 
         public async Task<ConsultantGroup> SingleOrDefaultAsync(Expression<Func<ConsultantGroup, bool>> predicate)

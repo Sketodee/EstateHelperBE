@@ -1,7 +1,9 @@
 ﻿using EstateHelper.Application.Auth;
+using EstateHelper.Application.Consultant;
 using EstateHelper.Application.ConsultantGroups;
 using EstateHelper.Application.Contract.Interface;
 using EstateHelper.Application.Products;
+using EstateHelper.Domain.Consultant;
 using EstateHelper.Domain.ConsultantGroups;
 using EstateHelper.Domain.HelperFunctions;
 using EstateHelper.Domain.Products;
@@ -28,7 +30,11 @@ namespace EstateHelperBE.NET
 
             services.AddScoped<IProductAppService, ProductAppService>();    
             services.AddScoped<IProductRepository, ProductRepository>();    
-            services.AddScoped<IProductManager, ProductManager>();  
+            services.AddScoped<IProductManager, ProductManager>();
+
+            services.AddScoped<IConsultantAppService, ConsultantAppService>(); 
+            services.AddScoped<IConsultantRepository, ConsultantRepository>();  
+            services.AddScoped<IConsultantManager, ConsultantManager>();    
 
         }
     }

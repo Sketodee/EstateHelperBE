@@ -47,12 +47,27 @@ namespace EstateHelper.Application.ConsultantGroups
             return _mapper.Map<GetConsultantGroupDto>(result); 
         }
 
-        public async Task<List<GetConsultantGroupDto>> GetAllConsultantGroup(string? Id, string? Name, string? Email, PaginationParamaters pagination)
+        public async Task<PagedResultDto<List<GetConsultantGroupDto>>> GetAllByFilter(string? Id, string? queryParam, PaginationParamaters pagination)
         {
-           var result= await _consultantGroupManager.GetAllConsultantGroup(Id, Name, Email, pagination);
-            return _mapper.Map<List<GetConsultantGroupDto>>(result);
+            var result = await _consultantGroupManager.GetAllByFilter(Id, queryParam, pagination);
+            var mappedData = _mapper.Map<List<GetConsultantGroupDto>>(result.Data);
+            return new PagedResultDto<List<GetConsultantGroupDto>>
+            {
+                TotalCount = result.TotalCount,
+                Data = mappedData
+            };
         }
 
+        public async Task<PagedResultDto<List<GetConsultantGroupDto>>> GetAllConsultantGroup(PaginationParamaters pagination)
+        {
+           var result= await _consultantGroupManager.GetAllConsultantGroup(pagination);
+            var mappedData = _mapper.Map<List<GetConsultantGroupDto>>(result.Data);
+            return new PagedResultDto<List<GetConsultantGroupDto>>
+            {
+                TotalCount = result.TotalCount,
+                Data = mappedData
+            };
+        }
        
     }
 }
