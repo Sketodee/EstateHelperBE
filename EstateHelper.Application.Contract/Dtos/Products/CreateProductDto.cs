@@ -16,9 +16,11 @@ namespace EstateHelper.Application.Contract.Dtos.Products
         [Required(ErrorMessage = "Location is required")]
         public string Location { get; set; }
         [Required(ErrorMessage = "Price is required")]
-        public PricingDto Pricing { get; set; }
+        public List<PricingDto> Pricing { get; set; }
         [Required(ErrorMessage = "Size is required")]
         public int Size { get; set; }
+        [Required(ErrorMessage ="Unit is Required")]
+        public ProductUnitEnum Unit { get; set; }
         [Required(ErrorMessage = "Availability is required")]
         public bool isAvailable { get; set; }
         

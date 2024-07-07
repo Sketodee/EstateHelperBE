@@ -155,6 +155,10 @@ namespace EstateHelper.EntityFramework.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("AccountManagerName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<string>("AccountName")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -218,22 +222,28 @@ namespace EstateHelper.EntityFramework.Migrations
 
             modelBuilder.Entity("EstateHelper.Domain.Models.Pricing", b =>
                 {
-                    b.Property<string>("ProductId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal?>("Development")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal?>("Survey")
                         .HasColumnType("decimal(18,2)");
 
-                    b.Property<int>("Unit")
-                        .HasColumnType("int");
+                    b.HasKey("Id");
 
-                    b.HasKey("ProductId");
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Pricing");
                 });
@@ -278,6 +288,9 @@ namespace EstateHelper.EntityFramework.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Size")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Unit")
                         .HasColumnType("int");
 
                     b.Property<bool>("isAvailable")
@@ -427,8 +440,8 @@ namespace EstateHelper.EntityFramework.Migrations
             modelBuilder.Entity("EstateHelper.Domain.Models.Pricing", b =>
                 {
                     b.HasOne("EstateHelper.Domain.Models.Product", "Product")
-                        .WithOne("Pricing")
-                        .HasForeignKey("EstateHelper.Domain.Models.Pricing", "ProductId")
+                        .WithMany("Pricing")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -488,8 +501,7 @@ namespace EstateHelper.EntityFramework.Migrations
 
             modelBuilder.Entity("EstateHelper.Domain.Models.Product", b =>
                 {
-                    b.Navigation("Pricing")
-                        .IsRequired();
+                    b.Navigation("Pricing");
                 });
 #pragma warning restore 612, 618
         }

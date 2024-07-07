@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EstateHelper.Application.Contract;
 using EstateHelper.Application.Contract.Dtos.Products;
+using EstateHelper.Application.Contract.Dtos.User;
 using EstateHelper.Application.Contract.Interface;
 using EstateHelper.Domain.Products;
 using System;
@@ -33,10 +34,26 @@ namespace EstateHelper.Application.Products
             return result; 
         }
 
-        public async Task<List<GetProductDto>> GetAllProducts(string? Id, string? Name, PaginationParamaters pagination)
+        public async Task<PagedResultDto<List<GetProductDto>>> GetAllProducts(PaginationParamaters pagination)
         {
-            var result = await _productManager.GetAllProducts(Id, Name, pagination);    
-            return _mapper.Map<List<GetProductDto>>(result);
+            var result = await _productManager.GetAllProducts(pagination);
+            var mappedData = _mapper.Map<List<GetProductDto>>(result.Data);
+            return new PagedResultDto<List<GetProductDto>>
+            {
+                TotalCount = result.TotalCount,
+                Data = mappedData
+            };
+        }
+
+        public async Task<PagedResultDto<List<GetProductDto>>> GetAllProductsByFilter(string? Id, string? Name, PaginationParamaters pagination)
+        {
+           var result = await _productManager.GetAllProductsByFilter(Id, Name, pagination);
+            var mappedData = _mapper.Map<List<GetProductDto>>(result.Data);
+            return new PagedResultDto<List<GetProductDto>>
+            {
+                TotalCount = result.TotalCount,
+                Data = mappedData
+            };
         }
 
         public async Task<GetProductDto> Update(EditProductDto input)

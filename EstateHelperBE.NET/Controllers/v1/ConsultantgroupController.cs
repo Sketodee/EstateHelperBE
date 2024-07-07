@@ -147,5 +147,25 @@ namespace EstateHelperBE.NET.Controllers.v1
             }
         }
 
+        [HttpGet("GetMembersOfConsultantGroup")]
+        public async Task<ActionResult<ServiceResponse<PagedResultDto<List<GetUserDto>>>>> GetMembersOfConsultantGroup(string groupId, [FromQuery]PaginationParamaters pagination)
+        {
+            ServiceResponse<PagedResultDto<List<GetUserDto>>> response = new();
+            try
+            {
+                var result = await _consultantGroupAppService.GetMembersOfConsultantGroup(groupId, pagination);
+                response.Data = result;
+                response.Success = true;
+                response.Message = "Users Successfuly fetched";
+                return StatusCode(200, response);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+                return StatusCode(500, response);
+            }
+        }
+
     }
 }

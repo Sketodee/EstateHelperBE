@@ -9,6 +9,7 @@ using EstateHelper.Domain.Shared;
 using EstateHelper.Domain.User;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Diagnostics.HealthChecks;
 using System;
 using System.Collections.Generic;
@@ -87,5 +88,29 @@ namespace EstateHelper.EntityFramework.Repository
             await _context.SaveChangesAsync();
             return input;
         }
+
+        public async Task<PagedResultDto<List<AppUser>>> GetMembersOfConsultantGroup(string groupId, PaginationParamaters pagination)
+        {
+            //string[] idsArray = commaSeparatedIds.Split(',');
+            var group = await SingleOrDefaultAsync(x => x.Id == groupId) ?? throw new Exception("Group not found"); 
+            List<AppUser> total = _context.Users
+                                         .Where(u => group.MembersId.Contains(u.Id)).ToList();
+            var users = total
+                                         .Skip((pagination.PageNumber - 1) * pagination.PageSize).Take(pagination.PageSize).OrderByDescending(x => x.CreatedOn).ToList();
+            return new PagedResultDto<List<AppUser>>
+            {
+                TotalCount = total.Count,
+                Data = users
+            };
+        }
+
+        private string GetConnection()
+        {
+            var config = new ConfigurationBuilder().AddJsonFile("appsettings.json", optional: false).Build();
+            var connectionString = config.GetSection("ConnectionStrings");
+            return connectionString["Default"];
+        }
+
+
     }
 }

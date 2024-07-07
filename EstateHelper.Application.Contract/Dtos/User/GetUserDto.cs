@@ -29,5 +29,7 @@ namespace EstateHelper.Application.Contract.Dtos.User
         public bool isActive { get; set; } = true;
 
         public string PhoneNumber { get; set; } = string.Empty;
+
+        public string FullName { get; set; }
     }
 }

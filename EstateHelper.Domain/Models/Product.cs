@@ -13,8 +13,9 @@ namespace EstateHelper.Domain.Models
         public string Name { get; set; }    
         public string Description { get; set; }
         public string Location { get; set; }    
-        public Pricing Pricing { get; set; }
-        public int Size { get; set; }   
+        public List<Pricing> Pricing { get; set; }
+        public int Size { get; set; }
+        public ProductUnitEnum Unit { get; set; }
         public bool isAvailable {  get; set; }  
         public List<string> ImageLinks { get; set; }    
     }

@@ -1,4 +1,5 @@
 ﻿using EstateHelper.Application.Contract.Dtos.ConsultantGroups;
+using EstateHelper.Application.Contract.Dtos.User;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,6 +16,7 @@ namespace EstateHelper.Application.Contract.Interface
         Task<PagedResultDto<List<GetConsultantGroupDto>>> GetAllConsultantGroup(PaginationParamaters pagination);
         Task<PagedResultDto<List<GetConsultantGroupDto>>> GetAllByFilter(string? Id, string? queryParam, PaginationParamaters pagination);
         Task<GetConsultantGroupDto> EditConsultantGroup(EditConsultantGroupDto input);
-        
+        Task<PagedResultDto<List<GetUserDto>>> GetMembersOfConsultantGroup(string groupId, PaginationParamaters pagination);
+
     }
 }

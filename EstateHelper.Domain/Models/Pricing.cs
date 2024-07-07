@@ -13,12 +13,13 @@ namespace EstateHelper.Domain.Models
 {
     public class Pricing
     {
+        public string Id { get; set; } = Guid.NewGuid().ToString();
         public decimal Price { get; set; }  
-        public ProductUnitEnum Unit { get; set; }
+        public PricingDuration Duration { get; set; }
         public decimal? Survey {  get; set; }
         public decimal? Development {  get; set; }
         public decimal Total => Price + (Survey ?? 0) + (Development ?? 0);
-        [Key, ForeignKey("Product")]
+        //[Key, ForeignKey("Product")]
         public string ProductId { get; set; }
         public Product Product { get; set; }
     }

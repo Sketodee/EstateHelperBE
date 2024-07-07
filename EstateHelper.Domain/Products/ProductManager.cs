@@ -49,9 +49,9 @@ namespace EstateHelper.Domain.Products
             return await _productRepository.DeleteAsync(product);   
         }
 
-        public async Task<List<Product>> GetAllProducts(string? Id, string? Name, PaginationParamaters pagination)
+        public async Task<PagedResultDto<List<Product>>> GetAllProducts(PaginationParamaters pagination)
         {
-            var product = await _productRepository.GetAllAsync(Id, Name, pagination) ?? throw new Exception("No product found");
+            var product = await _productRepository.GetAllAsync(pagination) ?? throw new Exception("No product found");
             return product; 
         }
 
@@ -65,6 +65,12 @@ namespace EstateHelper.Domain.Products
             var newProduct = _mapper.Map(input, product); 
             var result = await _productRepository.UpdateAsync(newProduct);
             return result;
+        }
+
+        public async Task<PagedResultDto<List<Product>>> GetAllProductsByFilter(string? Id, string? Name, PaginationParamaters pagination)
+        {
+            var product = await _productRepository.GetAllByFilter(Id, Name, pagination);    
+            return product;
         }
     }
 }

@@ -6,11 +6,12 @@ using System.Threading.Tasks;
 
 namespace EstateHelper.Application.Contract.Dtos.Products
 {
-    public class PricingDto
+    public class EditPricingDto
     {
-         public decimal Price { get; set; }
+        public string Id { get; set; } = Guid.NewGuid().ToString();
+        public decimal Price { get; set; }
         public PricingDuration Duration { get; set; }
-        public decimal? Survey {  get; set; }
-        public decimal? Development {  get; set; }
+        public decimal? Survey { get; set; }
+        public decimal? Development { get; set; }
     }
 }

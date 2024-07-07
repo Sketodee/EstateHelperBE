@@ -43,12 +43,32 @@ namespace EstateHelperBE.NET.Controllers.v1
         }
 
         [HttpGet("GetAllProducts")]
-        public async Task<ActionResult<ServiceResponse<List<GetProductDto>>>> GetAllProducts(string? Id, string? Name,[FromQuery] PaginationParamaters pagination)
+        public async Task<ActionResult<ServiceResponse<PagedResultDto<List<GetProductDto>>>>> GetAllProducts([FromQuery] PaginationParamaters pagination)
         {
-            ServiceResponse<List<GetProductDto>> response = new();
+            ServiceResponse<PagedResultDto<List<GetProductDto>>> response = new();
             try
             {
-                var result = await _productAppService.GetAllProducts(Id, Name, pagination);
+                var result = await _productAppService.GetAllProducts(pagination);
+                response.Data = result;
+                response.Success = true;
+                response.Message = "Products successfully fetched";
+                return StatusCode(200, response);
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+                return StatusCode(500, response);
+            }
+        }
+
+        [HttpGet("GetAllProductsByFilter")]
+        public async Task<ActionResult<ServiceResponse<PagedResultDto<List<GetProductDto>>>>> GetAllProductsByFilter(string? Id, string? Name,[FromQuery] PaginationParamaters pagination)
+        {
+            ServiceResponse<PagedResultDto<List<GetProductDto>>> response = new();
+            try
+            {
+                var result = await _productAppService.GetAllProductsByFilter(Id, Name, pagination);
                 response.Data = result;
                 response.Success = true;
                 response.Message = "Products successfully fetched";

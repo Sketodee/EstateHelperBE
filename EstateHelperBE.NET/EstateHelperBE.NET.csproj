@@ -34,4 +34,8 @@
     <ProjectReference Include="..\EstateHelper.EntityFramework\EstateHelper.EntityFramework.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="logs\" />
+  </ItemGroup>
+
 </Project>

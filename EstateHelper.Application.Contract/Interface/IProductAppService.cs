@@ -13,6 +13,8 @@ namespace EstateHelper.Application.Contract.Interface
 
         Task<GetProductDto> Update(EditProductDto input);
         Task<bool> Delete(string Id);
-        Task<List<GetProductDto>> GetAllProducts(string? Id, string? Name, PaginationParamaters pagination);
+        Task<PagedResultDto<List<GetProductDto>>> GetAllProducts(PaginationParamaters pagination);
+
+        Task<PagedResultDto<List<GetProductDto>>> GetAllProductsByFilter(string? Id, string? Name, PaginationParamaters pagination);
     }
 }

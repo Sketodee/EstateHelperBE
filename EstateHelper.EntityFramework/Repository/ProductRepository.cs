@@ -50,21 +50,16 @@ namespace EstateHelper.EntityFramework.Repository
             return result > 0;
         }
 
-        public async Task<List<Product>> GetAllAsync(string? Id, string? Name, PaginationParamaters pagination)
+        public async Task<PagedResultDto<List<Product>>> GetAllAsync(PaginationParamaters pagination)
         {
-            var query = await _context.Products.Where(x => !x.isDeleted).Include(x => x.Pricing).ToListAsync();
-            if (query.Count == 0) throw new Exception("No Product found");
-            if (!string.IsNullOrEmpty(Id))
+            var result = await _context.Products.Where(x => !x.isDeleted).Include(x => x.Pricing).OrderByDescending(x=> x.CreatedOn).ToListAsync();
+            if (result.Count == 0) throw new Exception("No Product Found");
+            var query = result.Skip((pagination.PageNumber - 1) * pagination.PageSize).Take(pagination.PageSize).OrderByDescending(x => x.CreatedOn).ToList();
+            return new PagedResultDto<List<Product>>
             {
-                query = query.Where(x => x.Id == Id).ToList();
-            }
-            if (!string.IsNullOrEmpty(Name))
-            {
-                query = query.Where(x => x.Name == Name).ToList();
-            }
-            if (query.Count == 0) throw new Exception("No Consultant Group found");
-            query = query.Skip((pagination.PageNumber - 1) * pagination.PageSize).Take(pagination.PageSize).OrderByDescending(x => x.CreatedOn).ToList();
-            return query;
+                TotalCount = result.Count,
+                Data = query
+            };
         }
 
         public async Task<Product> SingleOrDefaultAsync(Expression<Func<Product, bool>> predicate)
@@ -80,6 +75,27 @@ namespace EstateHelper.EntityFramework.Repository
             _context.Products.Update(input);
             await _context.SaveChangesAsync();
             return input;
+        }
+
+        public async Task<PagedResultDto<List<Product>>> GetAllByFilter(string? Id, string? Name, PaginationParamaters pagination)
+        {
+            var total = await _context.Products.Where(x => !x.isDeleted).Include(x => x.Pricing).OrderByDescending(x => x.CreatedOn).ToListAsync();
+            if (total.Count == 0) throw new Exception("No Product found");
+            if (!string.IsNullOrEmpty(Id))
+            {
+                total = total.Where(x => x.Id == Id).ToList();
+            }
+            if (!string.IsNullOrEmpty(Name))
+            {
+                total = total.Where(x => x.Name.ToLower().Contains(Name.ToLower())).ToList();
+            }
+            if (total.Count == 0) throw new Exception("No Product found");
+            var query = total.Skip((pagination.PageNumber - 1) * pagination.PageSize).Take(pagination.PageSize).OrderByDescending(x => x.CreatedOn).ToList();
+            return new PagedResultDto<List<Product>>
+            {
+                TotalCount = total.Count,
+                Data = query
+            };
         }
     }
 }

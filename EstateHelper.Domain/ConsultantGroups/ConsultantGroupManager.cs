@@ -90,6 +90,7 @@ namespace EstateHelper.Domain.ConsultantGroups
             var newGroup = _mapper.Map<ConsultantGroup>(input);
             newGroup.Code = code;
             newGroup.CreatedBy = user?.Id;
+            newGroup.AccountManagerName = accountManagerExist.FullName; 
 
             var result = await _consultantGroupRepository.CreateAsync(newGroup);
             return result;
@@ -146,5 +147,10 @@ namespace EstateHelper.Domain.ConsultantGroups
             return result; 
         }
 
+        public async Task<PagedResultDto<List<AppUser>>> GetMembersOfConsultantGroup(string groupId, PaginationParamaters pagination)
+        {
+            var result = await _consultantGroupRepository.GetMembersOfConsultantGroup(groupId, pagination); 
+            return result;
+        }
     }
 }

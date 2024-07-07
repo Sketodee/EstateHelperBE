@@ -17,6 +17,7 @@ namespace EstateHelper.Domain.ConsultantGroups
         Task<PagedResultDto<List<ConsultantGroup>>> GetAllConsultantGroup(PaginationParamaters pagination);
         Task<PagedResultDto<List<ConsultantGroup>>> GetAllByFilter(string? Id, string? queryParam, PaginationParamaters pagination); 
         Task<ConsultantGroup> EditConsultantGroup(EditConsultantGroupDto input);
-      
+        Task<PagedResultDto<List<AppUser>>> GetMembersOfConsultantGroup(string groupId, PaginationParamaters pagination);
+
     }
 }

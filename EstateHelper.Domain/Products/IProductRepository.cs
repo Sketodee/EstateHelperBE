@@ -14,7 +14,8 @@ namespace EstateHelper.Domain.Products
         Task<Product> UpdateAsync(Product input);
         Task<Product> CreateAsync(Product input);
         Task<bool> DeleteAsync(Product input);
-        Task<List<Product>> GetAllAsync(string? Id, string? Name, PaginationParamaters pagination);
+        Task<PagedResultDto<List<Product>>> GetAllAsync(PaginationParamaters pagination);
+        Task<PagedResultDto<List<Product>>> GetAllByFilter(string? Id, string? Name, PaginationParamaters pagination);
         Task<Product> SingleOrDefaultAsync(Expression<Func<Product, bool>> predicate);
         
     }

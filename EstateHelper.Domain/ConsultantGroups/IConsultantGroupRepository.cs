@@ -14,6 +14,7 @@ namespace EstateHelper.Domain.ConsultantGroups
         Task<bool> DeleteAsync(ConsultantGroup input);
         Task<PagedResultDto<List<ConsultantGroup>>> GetAllAsync(PaginationParamaters pagination);
         Task<PagedResultDto<List<ConsultantGroup>>> GetAllByFilter(string? Id, string? queryParam, PaginationParamaters pagination);
-        Task<ConsultantGroup> SingleOrDefaultAsync(Expression<Func<ConsultantGroup, bool>> predicate); 
+        Task<ConsultantGroup> SingleOrDefaultAsync(Expression<Func<ConsultantGroup, bool>> predicate);
+        Task<PagedResultDto<List<AppUser>>> GetMembersOfConsultantGroup(string groupId, PaginationParamaters pagination);
     }
 }

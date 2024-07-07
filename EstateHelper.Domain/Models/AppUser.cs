@@ -27,6 +27,7 @@ namespace EstateHelper.Domain.Models
         public DateTime TokenCreated { get; set; } 
         public DateTime TokenExpires { get; set; }
 
+        public string FullName => Surname + " " + FirstName;
     }
 
 }

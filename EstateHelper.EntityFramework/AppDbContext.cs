@@ -53,10 +53,10 @@ namespace EstateHelper.EntityFramework
                 .Property(e => e.Link)
                 .HasDefaultValueSql("NEXT VALUE FOR dbo.LinkSequence");
 
-            modelBuilder.Entity<Product>()
-            .HasOne(p => p.Pricing)
-            .WithOne(p => p.Product)
-            .HasForeignKey<Pricing>(p => p.ProductId);
+            //modelBuilder.Entity<Product>()
+            //.HasMany(p => p.Pricing)
+            //.WithOne(p => p.Product)
+            //.HasForeignKey(p => p.ProductId);
 
         }
     }

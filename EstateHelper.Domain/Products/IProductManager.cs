@@ -15,6 +15,7 @@ namespace EstateHelper.Domain.Products
         Task<Product> Update(EditProductDto input);
         Task<Product> Create(CreateProductDto input);
         Task<bool> Delete(string Id);
-        Task<List<Product>> GetAllProducts(string? Id, string? Name, PaginationParamaters pagination);
+        Task<PagedResultDto<List<Product>>> GetAllProducts(PaginationParamaters pagination);
+        Task<PagedResultDto<List<Product>>> GetAllProductsByFilter(string? Id, string? Name, PaginationParamaters pagination);
     }
 }

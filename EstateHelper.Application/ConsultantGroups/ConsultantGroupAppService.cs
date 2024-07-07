@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using EstateHelper.Application.Contract;
 using EstateHelper.Application.Contract.Dtos.ConsultantGroups;
+using EstateHelper.Application.Contract.Dtos.User;
 using EstateHelper.Application.Contract.Interface;
 using EstateHelper.Domain.ConsultantGroups;
 using EstateHelper.Domain.HelperFunctions;
@@ -68,6 +69,16 @@ namespace EstateHelper.Application.ConsultantGroups
                 Data = mappedData
             };
         }
-       
+
+        public async Task<PagedResultDto<List<GetUserDto>>> GetMembersOfConsultantGroup(string groupId, PaginationParamaters pagination)
+        {
+            var result = await _consultantGroupManager.GetMembersOfConsultantGroup(groupId, pagination);
+            var mappedData = _mapper.Map<List<GetUserDto>>(result.Data);
+            return new PagedResultDto<List<GetUserDto>>
+            {
+                TotalCount = result.TotalCount,
+                Data = mappedData
+            };
+        }
     }
 }

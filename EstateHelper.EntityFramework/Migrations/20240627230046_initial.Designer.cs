@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EstateHelper.EntityFramework.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240615140257_createdProductEntity2")]
-    partial class createdProductEntity2
+    [Migration("20240627230046_initial")]
+    partial class initial
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -221,14 +221,21 @@ namespace EstateHelper.EntityFramework.Migrations
 
             modelBuilder.Entity("EstateHelper.Domain.Models.Pricing", b =>
                 {
-                    b.Property<string>("ProductId")
+                    b.Property<string>("Id")
                         .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal?>("Development")
                         .HasColumnType("decimal(18,2)");
 
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<decimal?>("Survey")
                         .HasColumnType("decimal(18,2)");
@@ -236,7 +243,9 @@ namespace EstateHelper.EntityFramework.Migrations
                     b.Property<int>("Unit")
                         .HasColumnType("int");
 
-                    b.HasKey("ProductId");
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
 
                     b.ToTable("Pricing");
                 });
@@ -430,8 +439,8 @@ namespace EstateHelper.EntityFramework.Migrations
             modelBuilder.Entity("EstateHelper.Domain.Models.Pricing", b =>
                 {
                     b.HasOne("EstateHelper.Domain.Models.Product", "Product")
-                        .WithOne("Pricing")
-                        .HasForeignKey("EstateHelper.Domain.Models.Pricing", "ProductId")
+                        .WithMany("Pricing")
+                        .HasForeignKey("ProductId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -491,8 +500,7 @@ namespace EstateHelper.EntityFramework.Migrations
 
             modelBuilder.Entity("EstateHelper.Domain.Models.Product", b =>
                 {
-                    b.Navigation("Pricing")
-                        .IsRequired();
+                    b.Navigation("Pricing");
                 });
 #pragma warning restore 612, 618
         }

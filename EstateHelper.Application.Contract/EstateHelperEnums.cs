@@ -26,4 +26,9 @@ namespace EstateHelper.Application.Contract
         SquareMeter, Plot
     }
 
+    public enum PricingDuration
+    {
+        Outright, ThreeMonths, SixMonths, OneYear
+    }
+
 }

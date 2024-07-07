@@ -12,8 +12,9 @@ namespace EstateHelper.Application.Contract.Dtos.Products
         public string Name { get; set; }
         public string Description { get; set; }
         public string Location { get; set; }
-        public PricingDto Pricing { get; set; }   
+        public List<EditPricingDto> Pricing { get; set; }   
         public int Size { get; set; }
+        public ProductUnitEnum Unit { get; set; }
         public bool isAvailable { get; set; }
         public List<string> ImageLinks { get; set; }
 

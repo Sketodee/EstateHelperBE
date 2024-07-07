@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EstateHelper.EntityFramework.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20240615135143_createdProductEntity")]
-    partial class createdProductEntity
+    [Migration("20240707214531_addedAccountManagerNameToConsultantGroup")]
+    partial class addedAccountManagerNameToConsultantGroup
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -156,6 +156,10 @@ namespace EstateHelper.EntityFramework.Migrations
 
                     b.Property<string>("AccountManagerId")
                         .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<string>("AccountManagerName")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("AccountName")
@@ -216,7 +220,38 @@ namespace EstateHelper.EntityFramework.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("AccountManagerId")
+                        .IsUnique();
+
                     b.ToTable("ConsultantGroups");
+                });
+
+            modelBuilder.Entity("EstateHelper.Domain.Models.Pricing", b =>
+                {
+                    b.Property<string>("Id")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal?>("Development")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<int>("Duration")
+                        .HasColumnType("int");
+
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("ProductId")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<decimal?>("Survey")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ProductId");
+
+                    b.ToTable("Pricing");
                 });
 
             modelBuilder.Entity("EstateHelper.Domain.Models.Product", b =>
@@ -259,6 +294,9 @@ namespace EstateHelper.EntityFramework.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("Size")
+                        .HasColumnType("int");
+
+                    b.Property<int>("Unit")
                         .HasColumnType("int");
 
                     b.Property<bool>("isAvailable")
@@ -405,35 +443,26 @@ namespace EstateHelper.EntityFramework.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
-            modelBuilder.Entity("EstateHelper.Domain.Models.Product", b =>
+            modelBuilder.Entity("EstateHelper.Domain.Models.ConsultantGroup", b =>
                 {
-                    b.OwnsOne("EstateHelper.Domain.Models.Pricing", "Pricing", b1 =>
-                        {
-                            b1.Property<string>("ProductId")
-                                .HasColumnType("nvarchar(450)");
-
-                            b1.Property<decimal?>("Development")
-                                .HasColumnType("decimal(18,2)");
-
-                            b1.Property<decimal>("Price")
-                                .HasColumnType("decimal(18,2)");
-
-                            b1.Property<decimal?>("Survey")
-                                .HasColumnType("decimal(18,2)");
-
-                            b1.Property<int>("Unit")
-                                .HasColumnType("int");
-
-                            b1.HasKey("ProductId");
-
-                            b1.ToTable("Products");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ProductId");
-                        });
-
-                    b.Navigation("Pricing")
+                    b.HasOne("EstateHelper.Domain.Models.AppUser", "AccountManager")
+                        .WithOne()
+                        .HasForeignKey("EstateHelper.Domain.Models.ConsultantGroup", "AccountManagerId")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AccountManager");
+                });
+
+            modelBuilder.Entity("EstateHelper.Domain.Models.Pricing", b =>
+                {
+                    b.HasOne("EstateHelper.Domain.Models.Product", "Product")
+                        .WithMany("Pricing")
+                        .HasForeignKey("ProductId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Product");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -485,6 +514,11 @@ namespace EstateHelper.EntityFramework.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("EstateHelper.Domain.Models.Product", b =>
+                {
+                    b.Navigation("Pricing");
                 });
 #pragma warning restore 612, 618
         }

@@ -22,5 +22,6 @@ namespace EstateHelper.Domain.Models
         public string Code { get; set; }    
         public List<string> MembersId { get; set; } 
         public string AccountManagerId { get; set; }
+        public string AccountManagerName { get; set; }
     }
 }
