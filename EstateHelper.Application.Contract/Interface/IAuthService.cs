@@ -17,5 +17,6 @@ namespace EstateHelper.Application.Contract.Interface
         Task<string> GetRefreshToken();
         Task<string> Logout();
         Task<bool> AddUserToRole(string roleName, string userId);
+        Task<PagedResultDto<List<GetUserDto>>> GetAdmins(PaginationParamaters pagination);  
     }
 }

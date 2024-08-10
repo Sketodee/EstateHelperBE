@@ -1,4 +1,5 @@
-﻿using EstateHelper.Application.Contract.Dtos.Login;
+﻿using EstateHelper.Application.Contract;
+using EstateHelper.Application.Contract.Dtos.Login;
 using EstateHelper.Application.Contract.Dtos.User;
 using EstateHelper.Domain.Models;
 using System;
@@ -17,6 +18,7 @@ namespace EstateHelper.Domain.User
         Task<GetLoggedInUserDto> GetLoggedInUser();  
         Task<string> GetRefreshToken();
         Task<string> Logout();
-        Task<bool> AddUserToRole(string roleName, string userId);   
+        Task<bool> AddUserToRole(string roleName, string userId);
+        Task<PagedResultDto<List<AppUser>>> GetAdmins(PaginationParamaters pagination);
     }
 }

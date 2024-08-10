@@ -20,6 +20,7 @@ using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace EstateHelper.Domain.User
 {
@@ -258,6 +259,19 @@ namespace EstateHelper.Domain.User
             if (!result.Succeeded) throw new Exception("Can't add user to role"); 
             return result.Succeeded;    
 
+        }
+
+        public async Task<PagedResultDto<List<AppUser>>> GetAdmins(PaginationParamaters pagination)
+        {
+            var usersInRole = new List<AppUser>();
+            var users = await _appUserManager.GetUsersInRoleAsync(EstateHelperEnums.EstateHelperRoles.Admin.ToString());
+            var filteredUsers = users.Where(x => x.isActive).Skip((pagination.PageNumber - 1) * pagination.PageSize).Take(pagination.PageSize).OrderByDescending(x => x.CreatedOn).ToList();
+            usersInRole.AddRange(filteredUsers);
+            return new PagedResultDto<List<AppUser>>
+            {
+                TotalCount = users.Count,
+                Data = usersInRole
+            };
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using EstateHelper.Application.Contract.Dtos.Client;
 using EstateHelper.Application.Contract.Dtos.ConsultantGroups;
 using EstateHelper.Application.Contract.Dtos.Products;
 using EstateHelper.Application.Contract.Dtos.User;
@@ -23,6 +24,11 @@ namespace EstateHelperBE.NET
 
             CreateMap<Pricing, PricingDto>().ReverseMap();  
             CreateMap<Pricing, GetPricingDto>().ReverseMap();  
+            CreateMap<Pricing, EditPricingDto>().ReverseMap();  
+
+            CreateMap<Client, CreateClientDto>().ReverseMap();  
+            CreateMap<Client,  GetClientDto>().ReverseMap();    
+            CreateMap<Client,  EditClientDto>().ReverseMap();    
         }
     }
 }

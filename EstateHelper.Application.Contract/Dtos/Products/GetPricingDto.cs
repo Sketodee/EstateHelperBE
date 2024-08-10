@@ -8,6 +8,7 @@ namespace EstateHelper.Application.Contract.Dtos.Products
 {
     public class GetPricingDto
     {
+        public string Id { get; set; }
         public decimal Price { get; set; }
         public PricingDuration Duration { get; set; }
         public decimal? Survey { get; set; }

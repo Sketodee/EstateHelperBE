@@ -40,7 +40,9 @@ namespace EstateHelper.EntityFramework.Repository
             }
             if (!string.IsNullOrEmpty(queryParam))
             {
-                total = total.Where(x => x.FirstName.ToLower().Contains(queryParam.ToLower()) || x.Email.ToLower().Contains(queryParam.ToLower()) || x.Surname.Contains(queryParam)).ToList();
+                total = total.Where(x => x.FirstName.ToLower().Contains(queryParam.ToLower()) 
+                || x.Email.ToLower().Contains(queryParam.ToLower()) 
+                || x.Surname.ToLower().Contains(queryParam.ToLower())).ToList();
             }
             if (total.Count == 0) throw new Exception("No Consultant found");
             var query = total.Skip((pagination.PageNumber - 1) * pagination.PageSize).Take(pagination.PageSize).OrderByDescending(x => x.CreatedOn).ToList();

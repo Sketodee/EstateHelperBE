@@ -1,7 +1,9 @@
 ﻿using AutoMapper;
+using EstateHelper.Application.Contract;
 using EstateHelper.Application.Contract.Dtos.Login;
 using EstateHelper.Application.Contract.Dtos.User;
 using EstateHelper.Application.Contract.Interface;
+using EstateHelper.Domain.Models;
 using EstateHelper.Domain.User;
 using System;
 using System.Collections.Generic;
@@ -62,6 +64,17 @@ namespace EstateHelper.Application.Auth
         {
             var result = await _userManager.SignUpUser(request);    
             return _mapper.Map<CreateUserDto>(result);
+        }
+
+        public async Task<PagedResultDto<List<GetUserDto>>> GetAdmins(PaginationParamaters pagination)
+        {
+            var result = await _userManager.GetAdmins(pagination);
+            var mappedData = _mapper.Map<List<GetUserDto>>(result.Data);
+            return new PagedResultDto<List<GetUserDto>>
+            {
+                TotalCount = result.TotalCount,
+                Data = mappedData
+            };
         }
 
     }

@@ -168,5 +168,26 @@ namespace EstateHelperBE.NET.Controllers.v1
             }
         }
 
+        [Authorize]
+        [HttpGet("GetAllAdmins")]
+        public async Task<ActionResult<ServiceResponse<PagedResultDto<List<GetUserDto>>>>> GetAdmins([FromQuery] PaginationParamaters pagination)
+        {
+            ServiceResponse<PagedResultDto<List<GetUserDto>>> response = new();
+            try
+            {
+                var result = await _authService.GetAdmins(pagination);
+                response.Data = result; 
+                response.Success = true;
+                response.Message = "Admins successfuky fetched"; 
+                return StatusCode(200, response);   
+            }
+            catch (Exception ex)
+            {
+                response.Success = false;
+                response.Message = ex.Message;
+                return StatusCode(500, response);
+            }
+        }
+
     }
 }

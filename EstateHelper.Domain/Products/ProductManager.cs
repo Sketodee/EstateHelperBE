@@ -60,9 +60,31 @@ namespace EstateHelper.Domain.Products
         {
             //check if product name exists 
             var product = await _productRepository.SingleOrDefaultAsync(x => x.Id == input.Id) ?? throw new Exception("Product not found");
-            //check if name and email exist
-            bool nameExist = await _productRepository.SingleOrDefaultAsync(x => x.Name == input.Name) == null && product.Name != input.Name ? true : throw new Exception("Name already exist");
-            var newProduct = _mapper.Map(input, product); 
+            //check if name exist
+            //bool nameExist = await _productRepository.SingleOrDefaultAsync(x => x.Name == input.Name) == null && product.Name != input.Name ? true : throw new Exception("Name already exist");
+
+            //handle pricing details under the products 
+            var existingPricing = product.Pricing;
+            var newPricing = input.Pricing;
+
+            foreach(var n in newPricing)
+            {
+                var existingPrice = existingPricing.FirstOrDefault(x => x.Id == n.Id);
+                if (existingPrice != null)
+                {
+                    var updatePrice = _mapper.Map<Pricing>(n);
+                    existingPrice = updatePrice;
+                }
+                else
+                {
+                    var newPrice = _mapper.Map<Pricing>(n);
+                    newPrice.Id = Guid.NewGuid().ToString();
+                    existingPricing.Add(newPrice);
+                }
+            }
+
+            var newProduct = _mapper.Map(input, product);
+            newProduct.Pricing = existingPricing; 
             var result = await _productRepository.UpdateAsync(newProduct);
             return result;
         }
