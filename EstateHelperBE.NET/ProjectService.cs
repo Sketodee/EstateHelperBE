@@ -41,6 +41,7 @@ namespace EstateHelperBE.NET
             services.AddScoped<IClientAppService, ClientAppService>();
             services.AddScoped<IClientRepository, ClientRepository>();  
             services.AddScoped<IClientManager, ClientManager>();    
+
         }
     }
 }
